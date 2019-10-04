@@ -28,6 +28,11 @@ def checkDupl(cde):
     return True
 
 
+def printCodes():
+    for x in codes:
+        print(x)
+
+
 for x in range(24):
     im = Image.new("RGB", (280, 500), "#FF05EE")
     while True:
@@ -45,5 +50,8 @@ for x in images:
     x.show()
 
 # show that there are no duplicates
-for x in codes:
-    print(checkDupl(x))
+# for x in codes:
+#     print(checkDupl(x))
+
+#print codes
+printCodes()
