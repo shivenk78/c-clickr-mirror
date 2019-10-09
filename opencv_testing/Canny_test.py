@@ -12,10 +12,12 @@ from matplotlib import pyplot as plt
 # cv2.createTrackbar('thresholdA', 'adjust', 0, 255, nothing)
 #
 #
+#
 
 
-# img = cv2.imread("/home/maxwelllwang/c-clickr/opencv_testing/test-image-v1.jpg", 1)
-img = cv2.imread("/home/maxwelllwang/c-clickr/opencv_testing/desk_test.jpg", 1)
+# img = cv2.imread("/home/maxwelllwang/c-clickr/opencv_testing/test-image-v1.jpg", -1)
+imgGs = cv2.imread("/home/maxwelllwang/c-clickr/opencv_testing/desk_test.jpg", 0)
+img = cv2.imread("/home/maxwelllwang/c-clickr/opencv_testing/desk_test.jpg", -1)
 
 sigmaString = input("input Sigma value")
 sigma = float(sigmaString)
@@ -25,12 +27,12 @@ higher = int(max(255, (1.0 + sigma) * imgMedian))
 print(higher)
 print(lower)
 cannyImg = cv2.Canny(img, lower, higher)
+cannyImgGs = cv2.Canny(imgGs, lower, higher)
 
-
-titles = ['image', 'cannyImg']
-images = [img, cannyImg]
-for i in range(2):
-    plt.subplot(1, 2, i+1), plt.imshow(images[i], 'gray')
+titles = ['image', 'imageGs', 'cannyImg']
+images = [img, cannyImgGs, cannyImg]
+for i in range(3):
+    plt.subplot(1, 3, i+1), plt.imshow(images[i], 'gray')
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 
@@ -42,3 +44,4 @@ while(1):
     if k == 27:
         break
 cv2.destroyAllWindows()
+
