@@ -13,6 +13,7 @@ curCode = []
 def checkCode(cde):
     for z in cde:
         if z != 0 and z != 1 and z != 2 and z != 3:
+            print('code must only have digits of 0-3')
             return False
     for z in cde:
         count = 0
@@ -20,9 +21,11 @@ def checkCode(cde):
             if y == z:
                 count += 1
         if count > 1:
+            print('code cannot have repeats of any of the digits')
             return False
     for z in codes:
         if z == cde:
+            print('code should not have been entered before')
             return False
     return True
 
@@ -45,22 +48,19 @@ def printCodes():
 def genImg(y):
     if checkCode(y):
         im = Image.new("RGB", (280, 500), "#FF05EE")
-        codes.append(y)
+        codes.append(y.copy())
         for x in range(4):
             im.paste((colors[y[x]]), (points[x][0], points[x][1], points[x][2], points[x][3]))
-        im.show()
-    else:
-        print('code cannot have repeats of any of the digits')
-        print('code must only have digits of 0-3')
-        print('code should not have been entered before')
+        # im.show()
+        images.append(im)
 
-listCode = list()
 print('Enter 0, 1, 2, and 3 in a random order:')
-for i in range(24):
+for i in range(3):
     for i in range(4):
-        listCode.append(int(input("#: ")))
+        curCode.append(int(input("#: ")))
     print()
-    genImg(listCode)
+    genImg(curCode)
+    curCode.clear()
 
 # for x in range(24):
 #     im = Image.new("RGB", (280, 500), "#FF05EE")
@@ -75,8 +75,8 @@ for i in range(24):
 #     for x in range(4):
 #         im.paste((colors[curCode[x]]), (points[x][0], points[x][1], points[x][2], points[x][3]))
 #     images.append(im)
-# for x in images:
-#     x.show()
+for x in images:
+    x.show()
 
 # show that there are no duplicates
 # for x in codes:
