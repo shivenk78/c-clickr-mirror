@@ -52,12 +52,15 @@ def genImg(y):
     else:
         print('code cannot have repeats of any of the digits')
         print('code must only have digits of 0-3')
+        print('code should not have been entered before')
 
 listCode = list()
 print('Enter 0, 1, 2, and 3 in a random order:')
-for i in range(4):
-    listCode.append(int(input("#: ")))
-genImg(listCode)
+for i in range(24):
+    for i in range(4):
+        listCode.append(int(input("#: ")))
+    print()
+    genImg(listCode)
 
 # for x in range(24):
 #     im = Image.new("RGB", (280, 500), "#FF05EE")
