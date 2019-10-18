@@ -15,14 +15,14 @@ def checkCode(cde):
         if z != 0 and z != 1 and z != 2 and z != 3:
             print('code must only have digits of 0-3')
             return False
-    for z in cde:
-        count = 0
-        for y in cde:
-            if y == z:
-                count += 1
-        if count > 1:
-            print('code cannot have repeats of any of the digits')
-            return False
+    # for z in cde:
+    #     count = 0
+    #     for y in cde:
+    #         if y == z:
+    #             count += 1
+    #     if count > 1:
+    #         print('code cannot have repeats of any of the digits')
+    #         return False
     for z in codes:
         if z == cde:
             print('code should not have been entered before')
@@ -51,6 +51,8 @@ def genImg(y):
         codes.append(y.copy())
         for x in range(4):
             im.paste((colors[y[x]]), (points[x][0], points[x][1], points[x][2], points[x][3]))
+        im.paste("black", (139, 0, 141, 400))
+        im.paste("black", (0, 199, 280, 201))
         # im.show()
         images.append(im)
 
