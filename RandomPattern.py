@@ -47,10 +47,7 @@ def generateRandomPattern() :
 	#generate 4-digit random code using all of 0,1,2,3
 	code = [];
 	while (len(code) < 4):
-		i = random.randrange(0, 4)
-		#print(i)
-		if not (i in code):
-			code.append(i)
+		code.append(random.randrange(0, 4))
 	print(code)
 
 	generatePattern(code)
