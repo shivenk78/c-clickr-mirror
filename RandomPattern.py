@@ -44,7 +44,6 @@ def generateInputPattern() :
 
 #generates random pattern
 def generateRandomPattern() :
-	#generate 4-digit random code using all of 0,1,2,3
 	code = [];
 	while (len(code) < 4):
 		code.append(random.randrange(0, 4))
