@@ -54,8 +54,10 @@ def genImg(y):
         # im.show()
         images.append(im)
 
+print('Enter the number of random images you want to generate up to 24:')
+numImg = int(input())
 print('Enter 0, 1, 2, and 3 in a random order:')
-for i in range(3):
+for i in range(numImg):
     for i in range(4):
         curCode.append(int(input("#: ")))
     print()
