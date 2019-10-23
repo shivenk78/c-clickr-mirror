@@ -3,13 +3,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 #load the image
-img = cv2.imread("test-image-v1.png",)
+img = cv2.imread("IMG_4557.jpg",)
 
 #make image grayscale
-grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 #filter out noise
-img = cv2.GaussianBlur(grayImg, (3,3), 2)
+img = cv2.GaussianBlur(img, (3,3), 2)
 
 #convolute with proper kernals
 laplacian = cv2.Laplacian(img,cv2.CV_64F)

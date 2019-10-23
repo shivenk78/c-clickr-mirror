@@ -20,18 +20,20 @@ while(1):
     lower_green = np.array([70,50,50])
     upper_green = np.array([100,255,255])
 
-    lower_yellow = np.array([70,50,50])
-    upper_yellow = np.array([100,255,255])
+    lower_yellow = np.array([30,50,50])
+    upper_yellow = np.array([60,255,255])
 
     # Define color range
     pink_mask = cv2.inRange(hsv, lower_pink, upper_pink) 
     blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
     red_mask = cv2.inRange(hsv, lower_red, upper_red)
     green_mask = cv2.inRange(hsv, lower_green, upper_green)
+    yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
 
     super_mask = cv2.bitwise_or(pink_mask, blue_mask)
     super_mask = cv2.bitwise_or(super_mask, red_mask)
     super_mask = cv2.bitwise_or(super_mask, green_mask)
+    super_mask = cv2.bitwise_or(super_mask, yellow_mask)
     
     # Color Masking
     res = cv2.bitwise_and(frame,frame, mask= super_mask) 
