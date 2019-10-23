@@ -1,13 +1,13 @@
-from PIL import Image
+from tkinter import *
+from PIL import Image, ImageTk
 
 colors = ["red", "green", "blue", "yellow"]
-points = [[0, 75, 70, 175], [70, 75, 140, 175], [140, 75, 210, 175], [210, 75, 280, 175],
-          [0, 175, 70, 275], [70, 175, 140, 275], [140, 175, 210, 275], [210, 175, 280, 275],
-          [0, 275, 70, 375], [70, 275, 140, 375], [140, 275, 210, 375], [210, 275, 280, 375],
-          [0, 375, 70, 475], [70, 375, 140, 475], [140, 375, 210, 475], [210, 375, 280, 475]]
+points = [[2, 79, 72, 179], [72, 79, 142, 179], [142, 79, 212, 179], [212, 79, 282, 179],
+          [2, 179, 72, 279], [72, 179, 142, 279], [142, 179, 212, 279], [212, 179, 282, 279],
+          [2, 279, 72, 379], [72, 279, 142, 379], [142, 279, 212, 379], [212, 279, 282, 379],
+          [2, 379, 72, 479], [72, 379, 142, 479], [142, 379, 212, 479], [212, 379, 282, 479]]
 codes = []
 images = []
-curCode = []
 
 def toFour(code):
     codeFour = 0
@@ -19,6 +19,8 @@ def toFour(code):
     for i in range(len(code4Str), 16):
         code4Str += "0"
     code4Str = code4Str[::-1]
+    print(code4Str)
+    toTen(code4Str)
     return code4Str
 
 def toTen(a):
@@ -31,19 +33,25 @@ def toTen(a):
 
 def genImg(y):
     y = list(y)
-    im = Image.new("RGB", (280, 550), "#FF05EE")
+    im = Image.new("RGB", (284, 558), "#FF05EE")
     codes.append(y.copy())
     for x in range(16):
         im.paste((colors[int(y[x])]), (points[x][0], points[x][1], points[x][2], points[x][3]))
     # black lines
-    im.paste("black", (68, 75, 72, 475))
-    im.paste("black", (138, 75, 142, 475))
-    im.paste("black", (208, 75, 212, 475))
-    im.paste("black", (0, 173, 280, 177))
-    im.paste("black", (0, 273, 280, 277))
-    im.paste("black", (0, 373, 280, 377))
+    im.paste("black", (0, 0, 284, 2))
+    im.paste("black", (0, 77, 284, 79))
+    im.paste("black", (0, 479, 284, 481))
+    im.paste("black", (0, 556, 284, 558))
+    im.paste("black", (0, 0, 2, 558))
+    im.paste("black", (282, 0, 284, 558))
+    im.paste("black", (71, 79, 73, 479))
+    im.paste("black", (141, 79, 143, 479))
+    im.paste("black", (211, 79, 213, 479))
+    im.paste("black", (2, 178, 282, 180))
+    im.paste("black", (2, 278, 282, 280))
+    im.paste("black", (2, 378, 282, 380))
 
-    im.paste("turquoise", (0, 475, 280, 550))
+    im.paste("turquoise", (2, 481, 282, 556))
     # im.show()
     images.append(im)
     return im
@@ -51,7 +59,16 @@ def genImg(y):
 def show():
     print('Enter your UIN:')
     numImg = int(input())
-    im = genImg(toFour((numImg)))
-    im.show()
+    if len(str(numImg)) == 9:
+        im = genImg(toFour((numImg)))
+        im.show()
+        root = Tk()
+        canvas = Canvas(root, width=300, height=560)
+        canvas.pack()
+        img = ImageTk.PhotoImage(im)
+        canvas.create_image(2, 2, image=img, anchor="nw")
+        # root.mainloop()
+    else:
+        print("UINs are exactly nine digits!")
 
 show()
