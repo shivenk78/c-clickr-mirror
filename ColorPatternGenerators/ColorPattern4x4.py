@@ -11,7 +11,10 @@ canvas.pack()
 
 # sets dimensions of each quadrant
 xDim = 100
-yDim = xDim
+yDim = int(xDim * 1.5)
+xTotal = xDim * 4
+yTotal = yDim * 4
+yStart = yDim / 2
 
 # assigns each digit in code to a color
 colorDict = {0: "red", 1: "blue", 2: "yellow", 3: "green"}
@@ -30,11 +33,12 @@ def generate_pattern(new_code_str):
 
     # fills each quadrant with its respective color
     count = 0
-    for j in range(0, yDim * 4, yDim):
-        for i in range(0, xDim * 4, xDim):
-            canvas.create_rectangle(i, j, i + xDim, j + yDim, fill=colorDict[code[count]])
+    for j in range(0, yTotal, yDim):
+        for i in range(0, xTotal, xDim):
+            canvas.create_rectangle(i, yStart + j, i + xDim, yStart + j + yDim, fill=colorDict[code[count]])
             count = count + 1
-    canvas.create_rectangle(0, yDim * 4, xDim * 4, yDim * 4.5, fill="purple")
+    canvas.create_rectangle(0, 0, xTotal, yStart, fill="magenta")
+    canvas.create_rectangle(0, yStart + yTotal, xTotal, yTotal + yDim, fill="cyan")
 
     # displays 16-digit code and 9-digit UIN in title
     print(to_string)
@@ -52,7 +56,7 @@ def generate_code_input_pattern():
 
 # generates pattern based on user input UIN
 def generate_uin_input_pattern():
-    uin_input_str = input("Enter a 10-digit UIN XXXXXXXXXX using [0-9]: ")
+    uin_input_str = input("Enter a 9-digit UIN XXXXXXXXXX using [0-9]: ")
 
     generate_pattern(uin_to_code(str(uin_input_str)))
 
@@ -108,6 +112,8 @@ choose_mode = {
     "r": generate_random_pattern,
     "cr": generate_continuous_random_pattern
 }
+
+
 try:
     func = choose_mode.get(mode)
     func()
