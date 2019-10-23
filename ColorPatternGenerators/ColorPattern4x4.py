@@ -17,7 +17,7 @@ yTotal = yDim * 4
 yStart = yDim / 2
 
 # assigns each digit in code to a color
-colorDict = {0: "red", 1: "blue", 2: "yellow", 3: "green"}
+colorDict = {0: "red", 1: "green", 2: "blue", 3: "yellow"}
 
 
 # generates pattern with a given code
