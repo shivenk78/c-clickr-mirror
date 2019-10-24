@@ -37,6 +37,7 @@ while True:
         area = cv.contourArea(contour)
         if area > 1000:
             cv.drawContours(frame, contour, -1, (0, 255, 0), 3)
+            
 
     cv.imshow("Frame", frame)
     cv.imshow("Mask", mask1)
