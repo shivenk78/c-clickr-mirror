@@ -61,13 +61,13 @@ def show():
     numImg = int(input())
     if len(str(numImg)) == 9:
         im = genImg(toFour((numImg)))
-        im.show()
+        # im.show()
         root = Tk()
         canvas = Canvas(root, width=300, height=560)
         canvas.pack()
         img = ImageTk.PhotoImage(im)
         canvas.create_image(2, 2, image=img, anchor="nw")
-        # root.mainloop()
+        root.mainloop()
     else:
         print("UINs are exactly nine digits!")
 
