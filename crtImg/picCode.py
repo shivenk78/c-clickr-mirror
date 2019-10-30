@@ -10,12 +10,14 @@ codes = []
 images = []
 
 def toFour(code):
+    code4Str = ""
     codeFour = 0
     while (code != 0):
-        codeFour *= 10
-        codeFour += code % 4
+        code4Str += str(code % 4)
+        # codeFour *= 10
+        # codeFour += code % 4
         code = int(code / 4)
-    code4Str = str(codeFour)
+    # code4Str = str(codeFour)
     for i in range(len(code4Str), 16):
         code4Str += "0"
     code4Str = code4Str[::-1]
