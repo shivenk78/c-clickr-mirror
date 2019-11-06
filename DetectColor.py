@@ -14,11 +14,20 @@ leftMiddle = ((botLeft[0] - topLeft[0]) / 2, (botLeft[1] - topLeft[1]) / 2)
 rightMiddle = ((botRight[0] - topRight[0]) / 2, (botRight[1] - topRight[1]) / 2)
 botMiddle = ((botRight[0] - botRight[0]) / 2, (botRight[1] - botLeft[1]) / 2)
 
-center = centroid(topLeft, topRight, botLeft, botRight)
-centerTopLeft = centroid(topLeft, topMiddle, center, leftMiddle)
-centerTopRight = centroid(topMiddle, topRight, rightMiddle, center)
-centerBotLeft = centroid(leftMiddle, center, botMiddle, botLeft)
-centerBotRight = centroid(center, rightMiddle, botRight, botMiddle)
+center = findCoords(leftMiddle, rightMiddle)
+
+topMiddle = ((topRight[0] - topRight[0]) / 2, (topRight[1] - topLeft[1]) / 2)
+leftMiddle = ((botLeft[0] - topLeft[0]) / 2, (botLeft[1] - topLeft[1]) / 2)
+rightMiddle = ((botRight[0] - topRight[0]) / 2, (botRight[1] - topRight[1]) / 2)
+botMiddle = ((botRight[0] - botRight[0]) / 2, (botRight[1] - botLeft[1]) / 2)
+
+class Quadrilateral:
+  def __init__(TL, TR, BL, BR):
+      topLeft = TL
+      topRight = TR
+      botLeft = BL
+      botRight = BR
+
 
 def centroid(vertexes):
      _x_list = [vertex [0] for vertex in vertexes]
@@ -27,3 +36,6 @@ def centroid(vertexes):
      _x = sum(_x_list) / _len
      _y = sum(_y_list) / _len
      return(_x, _y)
+
+def findCoords(point1, point2):
+    return ((point2[0] - point1[0]) / 2, (point2[1] - point1[1]) / 2)
