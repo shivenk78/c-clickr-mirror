@@ -4,6 +4,54 @@ import cv2
 #Detects each of the colors in the pattern and where
 #Colors stored in a list, snake style starting in upper left and ending in lower left
 
+class Quadrilateral:
+    def __init__(self, TL, TR, BL, BR):
+        self.topLeft = TL
+        self.topRight = TR
+        self.botLeft = BL
+        self.botRight = BR
+
+
+    def findHalves(self, point1, point2):
+        return ((point2[0] - point1[0]) / 2, (point2[1] - point1[1]) / 2)
+
+    #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
+    def findQuarterQuad(self, num):
+        leftMiddle = self.findHalves(topLeft, botLeft)
+        rightMiddle = self.findHalves(topRight, botRight)
+        center = self.findHalves(leftMiddle, rightMiddle)
+        if num == 1:
+            return Quadrilateral(self.findHalves(self.topLeft, self.topRight), self.topRight, center, rightMiddle)
+        elif num == 2:
+            return Quadrilateral(self.topLeft, self.findHalves(self.topLeft, self.topRight), leftMiddle, center)
+        elif num == 3:
+            return Quadrilateral(leftMiddle, center, self.botLeft, self.findHalves(self.botLeft, self.botRight))
+        elif num == 4:
+            return Quadrilateral(center, rightMiddle, self.findHalves(self.botLeft, self.botRight), self.botRight)
+
+    def findRectFit(self):
+        if self.topLeft[0] > self.botLeft[0]:
+            x1 = self.topLeft[0]
+        else:
+            x1 = self.botLeft[0]
+
+        if self.topRight[0] > self.botRight[0]:
+            x2 = self.botRight[0]
+        else:
+            x2 = self.topRight[0]
+
+        if self.topLeft[1] > self.botLeft[1]:
+            y1 = self.topLeft[1]
+        else:
+            y1 = self.botLeft[1]
+
+        if self.topRight[1] > self.botRight[1]:
+            y2 = self.botRight[1]
+        else:
+            y2 = self.topRight[1];
+
+        return ((x1, y1), (x2, y2))
+
 topLeft = (0, 0)
 topRight = (100, 0)
 botLeft = (0, 100)
@@ -16,43 +64,13 @@ topLeftQuarter = fullPattern.findQuarterQuad(2)
 botLeftQuarter = fullPattern.findQuarterQuad(3)
 botRightQuarter = fullPattern.findQuarterQuad(4)
 
-pointsListX = []
-pointsListY = []
+quarterArray = [topRightQuarter, topLeftQuarter, botLeftQuarter, botRightQuarter]
 
-for i in range (16):
+colorRects = []
 
+for quarter in quarterArray:
+    for i in range(1, 4):
+        sixteenth = quarter.findQuarterQuad(i)
+        colorRects.append(sixteenth.findRectFit())
 
-class Quadrilateral:
-    def __init__(TL, TR, BL, BR):
-        topLeft = TL
-        topRight = TR
-        botLeft = BL
-        botRight = BR
-
-
-    def centroid(vertexes):
-         _x_list = [vertex [0] for vertex in vertexes]
-         _y_list = [vertex [1] for vertex in vertexes]
-         _len = len(vertexes)
-         _x = sum(_x_list) / _len
-         _y = sum(_y_list) / _len
-         return(_x, _y)
-
-    def findHalves(point1, point2):
-        return ((point2[0] - point1[0]) / 2, (point2[1] - point1[1]) / 2)
-
-    #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
-    def findQuarterQuad(num):
-        leftMiddle = findHalves(topLeft, botLeft)
-        rightMiddle = findHalves(topRight, botRight)
-        center = findHalves(leftMiddle, rightMiddle)
-        if num == 1:
-            return Quadrilateral(findHalves(topLeft, topRight), topRight, center, rightMiddle)
-        elif num == 2:
-            return Quadrilateral(topLeft, findHalves(topLeft, topRight), leftMiddle, center)
-        elif num == 3:
-            return Quadrilateral(leftMiddle, center, botLeft, findHalves(botLeft, botRight))
-        elif num == 4:
-            return Quadrilateral(center, rightMiddle, findHalves(botLeft, botRight), botRight)
-        else:
-            return null
+print(colorRects)
