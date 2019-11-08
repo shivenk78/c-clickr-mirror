@@ -13,7 +13,7 @@ class Quadrilateral:
 
 
     def findHalves(self, point1, point2):
-        return ((point2[0] - point1[0]) / 2, (point2[1] - point1[1]) / 2)
+        return (point1[0] + ((point2[0] - point1[0]) / 2), point1[1] + ((point2[1] - point1[1]) / 2))
 
     #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
     def findQuarterQuad(self, num):
@@ -40,15 +40,15 @@ class Quadrilateral:
         else:
             x2 = self.topRight[0]
 
-        if self.topLeft[1] > self.botLeft[1]:
+        if self.topLeft[1] > self.topRight[1]:
             y1 = self.topLeft[1]
         else:
             y1 = self.botLeft[1]
 
-        if self.topRight[1] > self.botRight[1]:
+        if self.botLeft[1] > self.botRight[1]:
             y2 = self.botRight[1]
         else:
-            y2 = self.topRight[1];
+            y2 = self.botLeft[1]
 
         return ((x1, y1), (x2, y2))
 
@@ -64,6 +64,8 @@ topLeftQuarter = fullPattern.findQuarterQuad(2)
 botLeftQuarter = fullPattern.findQuarterQuad(3)
 botRightQuarter = fullPattern.findQuarterQuad(4)
 
+print(str(topRightQuarter.topLeft) + " " + str(topRightQuarter.botRight))
+
 quarterArray = [topRightQuarter, topLeftQuarter, botLeftQuarter, botRightQuarter]
 
 colorRects = []
@@ -72,5 +74,6 @@ for quarter in quarterArray:
     for i in range(1, 4):
         sixteenth = quarter.findQuarterQuad(i)
         colorRects.append(sixteenth.findRectFit())
+        print(str(sixteenth.topLeft) + " " + str(sixteenth.botRight))
 
 print(colorRects)
