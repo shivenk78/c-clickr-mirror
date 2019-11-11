@@ -64,8 +64,6 @@ topLeftQuarter = fullPattern.findQuarterQuad(2)
 botLeftQuarter = fullPattern.findQuarterQuad(3)
 botRightQuarter = fullPattern.findQuarterQuad(4)
 
-print(str(topRightQuarter.topLeft) + " " + str(topRightQuarter.botRight))
-
 quarterArray = [topRightQuarter, topLeftQuarter, botLeftQuarter, botRightQuarter]
 
 colorRects = []
@@ -74,6 +72,3 @@ for quarter in quarterArray:
     for i in range(1, 4):
         sixteenth = quarter.findQuarterQuad(i)
         colorRects.append(sixteenth.findRectFit())
-        print(str(sixteenth.topLeft) + " " + str(sixteenth.botRight))
-
-print(colorRects)
