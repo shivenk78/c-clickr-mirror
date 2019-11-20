@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Table from 'react-bootstrap/Table'
 
 import { restdb, realtimeURL } from '../helpers/endpoints'
 
@@ -18,9 +19,10 @@ class Attendance extends Component {
 
     addPingWatch() {
         this.eventSource.addEventListener('ping', e => {
-            this.setState(prev => {
-                ping: new Date(e.data)
-            })
+            this.setState(prev => ({
+                ping: new Date(e.data),
+                students: this.props.students
+            }))
         })
     }
 
@@ -30,9 +32,9 @@ class Attendance extends Component {
             let diff = (now - this.state.ping.getTime()) / 1000
 
             if (diff > 20) {
-                window.location.reload();
+                //window.location.reload();
             }
-        }, 10000)
+        }, 1000)
 
         this.addPingWatch()
     }
@@ -43,28 +45,27 @@ class Attendance extends Component {
     }
 
     render() {
+        console.log('attendance render')
         return (
-            <div className="students">
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>NetId</th>
+            <Table className="table" striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>NetId</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {this.props.students.map(student =>
+
+                        <tr key={student.netId}>
+                            <td>{student.name}</td>
+                            <td>{student.netId}</td>
                         </tr>
-                    </thead>
-                    <tbody>
+                    )}
 
-                        {this.state.students.map(student =>
-
-                            <tr key={student.id}>
-                                <td>{student.netId}</td>
-                                <td>{student.name}</td>
-                            </tr>
-                        )}
-
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </Table>
         )
     }
 }
