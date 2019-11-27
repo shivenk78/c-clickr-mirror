@@ -52,23 +52,25 @@ class Quadrilateral:
 
         return ((x1, y1), (x2, y2))
 
+    def sixteenthArray(self):
+        topRightQuarter = self.findQuarterQuad(1)
+        topLeftQuarter = self.findQuarterQuad(2)
+        botLeftQuarter = self.findQuarterQuad(3)
+        botRightQuarter = self.findQuarterQuad(4)
+
+        quarterArray = [topRightQuarter, topLeftQuarter, botLeftQuarter, botRightQuarter]
+        colorRects = []
+        for quarter in quarterArray:
+            for i in range(1, 4):
+                sixteenth = quarter.findQuarterQuad(i)
+                colorRects.append(sixteenth.findRectFit())
+
+        return colorRects
+
 topLeft = (0, 0)
 topRight = (100, 0)
 botLeft = (0, 100)
 botRight = (100, 100)
 
 fullPattern = Quadrilateral(topLeft, topRight, botLeft, botRight)
-
-topRightQuarter = fullPattern.findQuarterQuad(1)
-topLeftQuarter = fullPattern.findQuarterQuad(2)
-botLeftQuarter = fullPattern.findQuarterQuad(3)
-botRightQuarter = fullPattern.findQuarterQuad(4)
-
-quarterArray = [topRightQuarter, topLeftQuarter, botLeftQuarter, botRightQuarter]
-
-colorRects = []
-
-for quarter in quarterArray:
-    for i in range(1, 4):
-        sixteenth = quarter.findQuarterQuad(i)
-        colorRects.append(sixteenth.findRectFit())
+colorRects = fullPattern.sixteenthArray()
