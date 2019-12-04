@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
 
-import { restdb, realtimeURL } from '../helpers/endpoints'
 
 class Attendance extends Component {
     constructor(props) {
