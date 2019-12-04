@@ -1,8 +1,5 @@
 import cv2
-
-#Given the coordinates of the corners of the pattern
-#Detects each of the colors in the pattern and where
-#Colors stored in a list, snake style starting in upper left and ending in lower left
+from imutils.video import VideoStream
 
 class Quadrilateral:
     def __init__(self, TL, TR, BL, BR):
@@ -54,3 +51,19 @@ class Quadrilateral:
             y2 = self.botLeft[1] - ((self.botLeft[1] - self.topLeft[1]) / 4)
 
         return ((x1, y1), (x2, y2))
+
+    #finds the average color of a rectangle (will not work on other quadrilaterals)
+    #image must be in hsv
+    def getAverageColor(self, image):
+        sum_hue = 0
+        sum_sat = 0
+        sum_val = 0
+        count = 0
+        for x in range(topLeft[0], topRight[0] + 1):
+            for y in range(topLeft[1], botLeft[1] + 1):
+                color = int(image[x,y])
+                sum_hue += color[0]
+                sum_sat += color[1]
+                sum_val += color[2]
+                count++
+        return int(sum_hue / count, sum_sat / count, sum_val / count)

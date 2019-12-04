@@ -1,5 +1,6 @@
 from Quadrilateral import Quadrilateral
 
+#takes a Quadrilateral and returns sixteen rectangles to find the average color of
 def sixteenthArray(root):
     topRightQuarter = root.findQuarterQuad(1)
     topLeftQuarter = root.findQuarterQuad(2)
@@ -14,6 +15,11 @@ def sixteenthArray(root):
             print(str(sixteenth.topLeft) + " " + str(sixteenth.botRight) + "\n")
             colorRects.append(sixteenth.findRectFit())
     return colorRects
+
+def array_average_color(root, image):
+    color_array = []
+    for rectangle in array:
+        color_array.append(rectangle.getAverageColor(image))
 
 topLeft = (0, 0)
 topRight = (100, 0)
