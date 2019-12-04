@@ -31,6 +31,7 @@ function App() {
   const { inputs, handleInputChange, handleSubmit } = useSignUpForm()
   return (
     <div className="App" >
+      <h1>Attendance</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" onChange={handleInputChange} value={inputs.name} />
         <input type="text" name="netId" onChange={handleInputChange} value={inputs.netId} />
