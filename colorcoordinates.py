@@ -135,8 +135,18 @@ while(1):
                 #cv2.imshow("blur", blur)
 
                 thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
-                #cv2.imshow("thresh", thresh)
-                cv2.imshow("cropped", thresh)
+                
+                (contours, ok1) = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+                c = 0
+                for i in contours:
+                        area = cv2.contourArea(i)
+                        if area > 1000/2:
+                                cv2.drawContours(crop_img, contours, c, (0, 255, 0), 3)
+                        c+=1
+                cv2.imshow("cropped", crop_img)
+
+                #cv2.imshow("cropped", thresh)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
         #cv2.imshow("Redcolour",red)
