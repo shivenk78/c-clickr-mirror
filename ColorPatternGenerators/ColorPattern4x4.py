@@ -11,10 +11,10 @@ canvas.pack()
 
 # sets dimensions of each quadrant
 xDim = 100
-yDim = int(xDim * 1.5)
+yDim = xDim
 xTotal = xDim * 4
 yTotal = yDim * 4
-yStart = yDim / 2
+yStart = int((xTotal * (16.0 / 9.0) - yTotal) / 2)
 
 # assigns each digit in code to a color
 colorDict = {0: "red", 1: "green", 2: "blue", 3: "yellow"}
@@ -38,7 +38,18 @@ def generate_pattern(new_code_str):
             canvas.create_rectangle(i, yStart + j, i + xDim, yStart + j + yDim, fill=colorDict[code[count]])
             count = count + 1
     canvas.create_rectangle(0, 0, xTotal, yStart, fill="magenta")
-    canvas.create_rectangle(0, yStart + yTotal, xTotal, yTotal + yDim, fill="cyan")
+    canvas.create_rectangle(0, yStart + yTotal, xTotal, yStart * 2 + yTotal, fill="cyan")
+
+    # draws lines
+    for j in range(0, yTotal + yDim, yDim):
+        canvas.create_rectangle(0, yStart + j - 5, xTotal, yStart + j + 5, fill="black")
+    for i in range(0, xTotal + xDim, xDim):
+        canvas.create_rectangle(i - 5, yStart, i + 5, yStart + yTotal, fill="black")
+
+    canvas.create_rectangle(0, 0, xTotal + 5, 5, fill="black")
+    canvas.create_rectangle(0, yStart * 2 + yTotal - 5, xTotal + 5, yStart * 2 + yTotal + 5, fill="black")
+    canvas.create_rectangle(0, 0, 5, yStart * 2 + yTotal + 5, fill="black")
+    canvas.create_rectangle(xTotal - 5, 0, xTotal + 5, yStart * 2 + yTotal + 5, fill="black")
 
     # displays 16-digit code and 9-digit UIN in title
     print(to_string)
@@ -112,7 +123,6 @@ choose_mode = {
     "r": generate_random_pattern,
     "cr": generate_continuous_random_pattern
 }
-
 
 try:
     func = choose_mode.get(mode)

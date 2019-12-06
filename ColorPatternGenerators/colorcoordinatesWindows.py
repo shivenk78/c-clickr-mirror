@@ -50,7 +50,7 @@ while (1):
     red = img[:, :, 2].copy()
     blue = img[:, :, 0].copy()
     img[:, :, 0] = red
-    img[:, :, 2] = blue
+    img[:, :, 0] = blue
 
     # list is cleared for each run through
     patternList = []
