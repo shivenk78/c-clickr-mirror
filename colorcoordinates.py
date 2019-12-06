@@ -9,6 +9,7 @@
 import cv2
 import numpy as np
 import math
+import imutils
 
 #create class to store pattern objects
 class pattern:
@@ -121,33 +122,57 @@ while(1):
         crop_img = img
         for thing in patternList:
                 #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
-                if thing.top.x < thing.bottom.x:
-                        dist = (thing.bottom.x - thing.top.x) / 2
-                        crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
-                else:
-                        dist = (thing.top.x - thing.bottom.x) / 2
-                        crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
+                # print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
+                # #find angle
+                # print abs(thing.bottom.y - thing.top.y)
+                # print abs(thing.bottom.x - thing.top.x)
 
-                gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-                #cv2.imshow("gray", gray)
+                #check for 0 division
+                #does not rotate if cyan is lower than magenta
+                if not (thing.bottom.x == thing.top.x):
+                        colorAngle = math.degrees(math.atan((thing.bottom.y - thing.top.y) / (thing.bottom.x - thing.top.x)))
+                        print colorAngle
+                        print int(colorAngle)
+                        #rotate cropped image
+                        if colorAngle != 0:
+                                for angle in xrange(0, 360, int(colorAngle)):
+                                        # rotate the image and display it
+                                        crop_img = imutils.rotate(img, angle=int(colorAngle))
 
-                blur = cv2.GaussianBlur(gray, (5,5), 0)
-                #cv2.imshow("blur", blur)
+                                        #set new pixel coordinates!!!
+                                        thing.bottom.x = imutils.rotate()
+                                        
+                                cv2.imshow("Rotated" , crop_img)
+                # if thing.top.x < thing.bottom.x:
+                #         dist = int((thing.bottom.x - thing.top.x) / (5 / 2))
+                #         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
+                # else:
+                #         dist = int((thing.top.x - thing.bottom.x) / (5 / 2))
+                #         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
 
-                thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+                # gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+                # #cv2.imshow("gray", gray)
+
+                # blur = cv2.GaussianBlur(gray, (5,5), 0)
+                # #cv2.imshow("blur", blur)
+
+                # thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+                # #cv2.RETR_TREE
+                # (contours, ok1) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                # #(contoursExternal, ok1) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+                # c = 0
+                # for i in contours:
+                #         area = cv2.contourArea(i)
+                #         if area > 1000/2:
+                #                 cv2.drawContours(crop_img, contours, c, (0, 255, 0), 3)
+                #                 #cv2.drawContours(crop_img, contoursExternal, c, (0, 0, 255), 3)
+                #         c+=1
                 
-                (contours, ok1) = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                # cv2.imshow("cropped", crop_img)
 
-                c = 0
-                for i in contours:
-                        area = cv2.contourArea(i)
-                        if area > 1000/2:
-                                cv2.drawContours(crop_img, contours, c, (0, 255, 0), 3)
-                        c+=1
-                cv2.imshow("cropped", crop_img)
-
-                #cv2.imshow("cropped", thresh)
-                #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
+                # cv2.imshow("cropped", thresh)
+                # print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
         #cv2.imshow("Redcolour",red)
         cv2.imshow("Color Tracking",img)
