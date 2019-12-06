@@ -46,6 +46,12 @@ while (1):
     image = ImageGrab.grab()
     img = np.array(image)
 
+    # numpy be weird where blue and red are swapped
+    red = img[:, :, 2].copy()
+    blue = img[:, :, 0].copy()
+    img[:, :, 0] = red
+    img[:, :, 2] = blue
+
     # list is cleared for each run through
     patternList = []
 
