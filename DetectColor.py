@@ -41,13 +41,25 @@ def rearrange(array):
         array[switch + 5] = temp2
     return array
 
+def color_balance(img):
+    magenta_box = Quadrilateral((0,0), (len(img[0]),0), (0,(7/32) * len(img)), (len(img[0]),(7/32) * len(img)))
+    avg_color = (magenta_box.findRectFit()).getAverageColor(img)
+    print(avg_color)
+    return (255 - avg_color[0], avg_color[1], 255 - avg_color[2])
+
 def master_runner(image):
-    blur = cv2.bilateralFilter(image,9,75,75)
-    img = np.array(cv2.cvtColor(blur, cv2.COLOR_BGR2HSV))
-    topLeft = (0, 0)
-    topRight = (len(img), 0)
-    botLeft = (0, len(img[0]))
-    botRight = (len(img), len(img[0]))
+    blur = np.array(cv2.bilateralFilter(image,9,75,75))
+    '''
+    balance_adjust = color_balance(blur)
+    blur[:,:,0] += balance_adjust[0]
+    blur[:,:,1] += balance_adjust[1]
+    blur[:,:,2] += balance_adjust[2]
+    '''
+    img = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
+    topLeft = (0, (7/32) * len(img))
+    topRight = (len(img[0]), (7/32) * len(img))
+    botLeft = (0, len(img) - (7/32) * len(img))
+    botRight = (len(img[0]), len(img) - (7/32) * len(img))
 
     fullPattern = Quadrilateral(topLeft, topRight, botLeft, botRight)
     colorRects = sixteenthArray(fullPattern)
@@ -61,5 +73,5 @@ def master_runner(image):
     print(color_digits_str)
     return code_to_uin(color_digits_str)
 
-img = cv2.imread('test_image.png')
+img = cv2.imread('FullSizeRender.jpeg')
 print(master_runner(img))
