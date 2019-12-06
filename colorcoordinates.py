@@ -36,6 +36,8 @@ idCount = 0
 while(1):
         _, img = cap.read()
 
+        img = cv2.bilateralFilter(img, 9, 75, 75)
+
         #list is cleared for each run through
         patternList = []
             
@@ -116,16 +118,25 @@ while(1):
                                                 patternList.append(p1)
                                                 idCount = idCount + 1
         #show each distance calculated
-         crop_img = img
+        crop_img = img
         for thing in patternList:
-                cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
+                #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
                 if thing.top.x < thing.bottom.x:
                         dist = (thing.bottom.x - thing.top.x) / 2
                         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
                 else:
                         dist = (thing.top.x - thing.bottom.x) / 2
                         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
-                cv2.imshow("cropped", crop_img)
+
+                gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+                #cv2.imshow("gray", gray)
+
+                blur = cv2.GaussianBlur(gray, (5,5), 0)
+                #cv2.imshow("blur", blur)
+
+                thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+                #cv2.imshow("thresh", thresh)
+                cv2.imshow("cropped", thresh)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
         #cv2.imshow("Redcolour",red)
