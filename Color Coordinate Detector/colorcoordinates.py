@@ -9,7 +9,13 @@
 import cv2
 import numpy as np
 import math
+
+#for linux
 import pyscreenshot as imageGrab
+
+#for windows and mac
+#from PIL import ImageGrab
+
 import imutils
 
 
