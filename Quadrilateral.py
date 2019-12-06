@@ -1,34 +1,38 @@
+#Quadrialteral Class - stores the corners (x, y) of a quadrilateral
+#                    - methods to split the quadrialteral into equal portions (grid)
+
 import cv2
 from imutils.video import VideoStream
 
 class Quadrilateral:
+    #initializes variables
     def __init__(self, TL, TR, BL, BR):
         self.topLeft = TL
         self.topRight = TR
         self.botLeft = BL
         self.botRight = BR
 
-    def testSelf(self):
-        return botRight
-
-
+    #finds the halfway point of a line drawn between two points
     def findHalves(self, point1, point2):
         return (point1[0] + ((point2[0] - point1[0]) / 2), point1[1] + ((point2[1] - point1[1]) / 2))
 
+    #returns a quarter of the quadrilateral, coordinate plane style (return first quadrant etc.)
     #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
     def findQuarterQuad(self, num):
         leftMiddle = self.findHalves(self.topLeft, self.botLeft)
         rightMiddle = self.findHalves(self.topRight, self.botRight)
         center = self.findHalves(leftMiddle, rightMiddle)
-        if num == 1:
+        if num == 2:
             return Quadrilateral(self.findHalves(self.topLeft, self.topRight), self.topRight, center, rightMiddle)
-        elif num == 2:
+        elif num == 1:
             return Quadrilateral(self.topLeft, self.findHalves(self.topLeft, self.topRight), leftMiddle, center)
         elif num == 3:
             return Quadrilateral(leftMiddle, center, self.botLeft, self.findHalves(self.botLeft, self.botRight))
         elif num == 4:
             return Quadrilateral(center, rightMiddle, self.findHalves(self.botLeft, self.botRight), self.botRight)
 
+    #returns a rectange completely within the bounds of the quadrilateral
+    #rectangle is NOT maximized, just want the area towards the center of the quadrilateral
     def findRectFit(self):
         if self.topLeft[0] > self.botLeft[0]:
             x1 = self.topLeft[0] + ((self.topRight[0] - self.topLeft[0]) / 4)
@@ -65,5 +69,5 @@ class Quadrilateral:
                 sum_hue += color[0]
                 sum_sat += color[1]
                 sum_val += color[2]
-                count++
+                count += 1
         return int(sum_hue / count, sum_sat / count, sum_val / count)
