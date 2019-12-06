@@ -54,7 +54,7 @@ class Quadrilateral:
         else:
             y2 = self.botLeft[1] - ((self.botLeft[1] - self.topLeft[1]) / 4)
 
-        return ((x1, y1), (x2, y2))
+        return Quadrilateral((x1,y1), (x2,y1), (x1,y2), (x2,y2))
 
     #finds the average color of a rectangle (will not work on other quadrilaterals)
     #image must be in hsv
@@ -63,11 +63,11 @@ class Quadrilateral:
         sum_sat = 0
         sum_val = 0
         count = 0
-        for x in range(topLeft[0], topRight[0] + 1):
-            for y in range(topLeft[1], botLeft[1] + 1):
-                color = int(image[x,y])
+        for x in range(int(self.topLeft[0]), int(self.topRight[0] + 1)):
+            for y in range(int(self.topLeft[1]), int(self.botLeft[1] + 1)):
+                color = image[y,x]
                 sum_hue += color[0]
                 sum_sat += color[1]
                 sum_val += color[2]
                 count += 1
-        return int(sum_hue / count, sum_sat / count, sum_val / count)
+        return (int(sum_hue / count), int(sum_sat / count), int(sum_val / count))
