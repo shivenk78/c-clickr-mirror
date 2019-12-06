@@ -116,8 +116,16 @@ while(1):
                                                 patternList.append(p1)
                                                 idCount = idCount + 1
         #show each distance calculated
+         crop_img = img
         for thing in patternList:
                 cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
+                if thing.top.x < thing.bottom.x:
+                        dist = (thing.bottom.x - thing.top.x) / 2
+                        crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
+                else:
+                        dist = (thing.top.x - thing.bottom.x) / 2
+                        crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
+                cv2.imshow("cropped", crop_img)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
         #cv2.imshow("Redcolour",red)
