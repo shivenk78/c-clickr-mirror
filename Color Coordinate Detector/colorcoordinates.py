@@ -10,7 +10,6 @@ import cv2
 import numpy as np
 import math
 import pyscreenshot as imageGrab
-import time
 
 
 # create class to store pattern objects
@@ -29,9 +28,9 @@ class coordinates:
 
 
 # capturing video through webcam
-# cap=cv2.VideoCapture(0)
-# cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
-# cap.set(cv2.CAP_PROP_AUTO_WB, 0)
+cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+cap.set(cv2.CAP_PROP_AUTO_WB, 0)
 
 # list of distances found
 patternList = []
@@ -40,8 +39,6 @@ patternList = []
 idCount = 0
 
 while (1):
-    # _, img = cap.read()
-
     # img = cv2.imread('testImage.png', 1)
     image = imageGrab.grab()
 
@@ -53,6 +50,7 @@ while (1):
     blue = img[:, :, 0].copy()
     img[:, :, 0] = red
     img[:, :, 2] = blue
+    img = cv2.bilateralFilter(img, 9, 75, 75)
 
     # list is cleared for each run through
     patternList = []
@@ -135,16 +133,42 @@ while (1):
                         patternList.append(p1)
                         idCount = idCount + 1
     # show each distance calculated
+    crop_img = img
     for thing in patternList:
-        cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0, 0, 0), 5)
+        # cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
+        if thing.top.x < thing.bottom.x:
+            dist = (thing.bottom.x - thing.top.x) / 2
+            crop_img = img[abs(thing.top.y - dist):thing.top.y + dist, thing.top.x:thing.bottom.x]
+        else:
+            dist = (thing.top.x - thing.bottom.x) / 2
+            crop_img = img[abs(thing.top.y - dist):thing.top.y + dist, thing.bottom.x:thing.top.x]
+
+        gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+        # cv2.imshow("gray", gray)
+
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        # cv2.imshow("blur", blur)
+
+        thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+
+        (contours, ok1) = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        c = 0
+        for i in contours:
+            area = cv2.contourArea(i)
+            if area > 1000 / 2:
+                cv2.drawContours(crop_img, contours, c, (0, 255, 0), 3)
+            c += 1
+        cv2.imshow("cropped", crop_img)
+
+        # cv2.imshow("cropped", thresh)
         # print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
     # cv2.imshow("Redcolour",red)
     cv2.imshow("Color Tracking", img)
     img = cv2.flip(img, 1)
-    time.sleep(1)
     # cv2.imshow("red",res)
     if cv2.waitKey(10) & 0xFF == ord('q'):
-        # cap.release()
+        cap.release()
         cv2.destroyAllWindows()
         break
