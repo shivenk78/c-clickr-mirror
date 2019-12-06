@@ -12,6 +12,7 @@ import math
 import pyscreenshot as imageGrab
 import time
 
+
 # create class to store pattern objects
 class pattern:
     def __init__(self, id, magenta, cyan, distance):
@@ -39,12 +40,19 @@ patternList = []
 idCount = 0
 
 while (1):
-
     # _, img = cap.read()
 
-    #img = cv2.imread('testImage.png', 1)
+    # img = cv2.imread('testImage.png', 1)
     image = imageGrab.grab()
+
+    # cv2.imshow("raw", image)
     img = np.array(image)
+
+    # numpy be weird where blue and red are swapped
+    red = img[:, :, 2].copy()
+    blue = img[:, :, 0].copy()
+    img[:, :, 0] = red
+    img[:, :, 2] = blue
 
     # list is cleared for each run through
     patternList = []
@@ -134,10 +142,9 @@ while (1):
     # cv2.imshow("Redcolour",red)
     cv2.imshow("Color Tracking", img)
     img = cv2.flip(img, 1)
-    time.sleep(5)
+    time.sleep(1)
     # cv2.imshow("red",res)
     if cv2.waitKey(10) & 0xFF == ord('q'):
-        #cap.release()
+        # cap.release()
         cv2.destroyAllWindows()
         break
-
