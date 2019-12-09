@@ -122,7 +122,7 @@ while(1):
                                         
                                         # if either coordinate is (0,0) that means it is not found and should not be appended to the list
                                         if not(redX == 0 and redY == 0) and not(blueX == 0 and blueY == 0):
-                                                distance = math.sqrt( ((redX-blueX)**2)+((redX-blueX)**2) )
+                                                distance = math.sqrt( ((redX-blueX)**2)+((redY-blueY)**2) )
 
                                                 #create object and append to the list
                                                 #first create two coordinate objects and then add that to the pattern object
@@ -136,6 +136,7 @@ while(1):
         
         crop_img_list = []
         for thing in patternList:
+                print thing.distance
                 #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
                 colorAngleRad = math.atan2((thing.bottom.y - thing.top.y), (thing.bottom.x - thing.top.x))
@@ -146,10 +147,12 @@ while(1):
                 rot_img = imutils.rotate(img, int(colorAngle))
                 (thing.top.x, thing.top.y) = rotatePoint(centerImage, (thing.top.x, thing.top.y), (2 * math.pi) - colorAngleRad)
                 (thing.bottom.x, thing.bottom.y) = rotatePoint(centerImage, (thing.bottom.x, thing.bottom.y), (2 * math.pi) - colorAngleRad)
-
+                
                 # draws circles around the centroids for visualization
-                # cv2.circle(rot_img, (int(thing.top.x), int(thing.top.y)), 7, (0, 255, 0), 4)
-                # cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
+                cv2.circle(rot_img, (int(thing.top.x), int(thing.top.y)), 7, (0, 255, 0), 4)
+                cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
+
+                cv2.imshow("rotate", rot_img)
                 dist = thing.distance
                 lengthAdd = float(25) /64 * dist
                 widthAdd = float(25) /36 * dist
@@ -157,15 +160,18 @@ while(1):
                 # print thing.top.y
                 try: 
                         crop_img = rot_img[int(thing.top.y - (lengthAdd)): int(thing.top.y + (lengthAdd)), int(thing.top.x - (widthAdd / 2)): int(thing.top.x + (2 * widthAdd))]
-                        #cv2.imshow("cropped", crop_img)
+                        cv2.imshow("cropped", crop_img)
                         addThis = crop_img
                         crop_img_list.append(addThis)
                 except:
                         continue
         count = 0
+        print len(crop_img_list)
         for image in crop_img_list:
                 try:
-                        cv2.imshow("cropped #" + str(count), crop_img)
+                        cv2.imshow("cropped #" + str(count), image)
+                        #cv2.imshow("this should look like this" + str(count), crop_img)
+
                 except:
                         crop_img_list.remove(image)
                         continue
@@ -177,4 +183,4 @@ while(1):
                 cap.release()
                 cv2.destroyAllWindows()
                 break
-        #crop_img_list is the list with all the cropped images
+        #crop_img_list is the list with all the cropped images, crop_img is the image we want to work with
