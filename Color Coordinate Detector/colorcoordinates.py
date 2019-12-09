@@ -180,8 +180,10 @@ while (1):
             #     cv2.drawContours(img, contours, c, (0, 255, 0), 3)
             if len(approx) == 4:
                 squareContours = approx
-
         cv2.drawContours(img, [squareContours], -1, (0, 255, 0), 2)
+
+
+
         cv2.imshow("cropped", img)
 
         # cv2.imshow("cropped", thresh)
