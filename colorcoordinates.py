@@ -22,7 +22,18 @@ class coordinates:
         def __init__(self, x, y):
                 self.x = x
                 self.y = y
+def rotatePoint(origin, point, angle):
+    """
+    Rotate a point counterclockwise by a given angle around a given origin.
 
+    The angle should be given in radians.
+    """
+    ox, oy = origin
+    px, py = point
+
+    qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
+    qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
+    return qx, qy
 #capturing video through webcam
 cap=cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
@@ -37,13 +48,17 @@ idCount = 0
 while(1):
         _, img = cap.read()
 
-        img = cv2.bilateralFilter(img, 9, 75, 75)
+        img = cv2.bilateralFilter(img, 11, 75, 75)
 
         #list is cleared for each run through
         patternList = []
             
         #converting frame(img i.e BGR) to HSV (hue-saturation-value)
         hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+
+        #find center of image
+        (h, w) = img.shape[:2]
+        centerImage = (w // 2, h // 2)
 
         #definig the range of magenta color
         red_lower=np.array([147,115,150],np.uint8)
@@ -122,33 +137,57 @@ while(1):
         crop_img = img
         for thing in patternList:
                 #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
-                # print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
+                print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
                 # #find angle
                 # print abs(thing.bottom.y - thing.top.y)
                 # print abs(thing.bottom.x - thing.top.x)
+                colorAngleRad = math.atan2((thing.bottom.y - thing.top.y), (thing.bottom.x - thing.top.x))
+                colorAngle = math.degrees(colorAngleRad)
+                
+                print "Radian" + str(colorAngleRad)
+                print "degrees" + str(int(colorAngle))
 
+                #rotate cropped image
+                if colorAngle != 0:
+                        rot_img = imutils.rotate(img, int(colorAngle))
+                (rotx, roty) = rotatePoint(centerImage, (thing.top.x, thing.top.y), colorAngleRad)
+                (rotx1, roty1) = rotatePoint(centerImage, (thing.bottom.x, thing.bottom.y), colorAngleRad)
+                cv2.circle(rot_img, (int(rotx), int(roty)), 7, (0, 255, 0), 4)
+                cv2.circle(rot_img, (int(rotx1), int(roty1)), 7, (255, 255, 255), 4)
+                cv2.imshow("Rotated" ,rot_img)       
                 #check for 0 division
                 #does not rotate if cyan is lower than magenta
-                if not (thing.bottom.x == thing.top.x):
-                        colorAngle = math.degrees(math.atan((thing.bottom.y - thing.top.y) / (thing.bottom.x - thing.top.x)))
-                        print colorAngle
-                        print int(colorAngle)
-                        #rotate cropped image
-                        if colorAngle != 0:
-                                for angle in xrange(0, 360, int(colorAngle)):
-                                        # rotate the image and display it
-                                        crop_img = imutils.rotate(img, angle=int(colorAngle))
+                # if (thing.bottom.x > thing.bottom.y):
+                #         colorAngleRad = math.atan((thing.bottom.y - thing.top.y) / (thing.bottom.x - thing.top.x))
+                #         colorAngle = math.degrees(colorAngleRad)
+                #         print colorAngle
+                #         print int(colorAngle)
+                #         #rotate cropped image
+                #         if colorAngle != 0:
+                #                 for angle in xrange(0, 360, int(colorAngle + 360)):
+                #                         # rotate the image and display it
+                #                         crop_img = imutils.rotate(img, angle=int(colorAngle + 360))
 
-                                        #set new pixel coordinates!!!
-                                        thing.bottom.x = imutils.rotate()
-                                        
-                                cv2.imshow("Rotated" , crop_img)
+                #                         #set new pixel coordinates!!!
+                #                         #thing.bottom.x = imutils.rotate()
+                #                 (rotx, roty) = rotatePoint(centerImage, (thing.top.x, thing.top.y), colorAngleRad + 2*math.pi)
+                #                 #(thing.bottom.x, thing.bottom.y) = rotatePoint((thing.bottom.x, thing.bottom.y), colorAngleRad + 2*math.pi, center)
+
+                #                 # thing.top.y = int(thing.top.y)
+                #                 # thing.bottom.y = int(thing.bottom.y)
+                #                 # thing.top.x = int(thing.top.x)
+                #                 # thing.bottom.x = int(thing.bottom.x)
+                #                 # cv2.circle(crop_img, (int(rotx), int(roty)), 7, (255, 0, 0))
+                #                 # cv2.circle(crop_img, (int(thing.top.x), int (thing.top.y)), 5, (0, 255, 0))
+                #                 # cv2.circle(img, (int(thing.top.x), int (thing.top.y)), 3, (0, 0, 0))
+
+                #                 cv2.imshow("Rotated" ,crop_img)
                 # if thing.top.x < thing.bottom.x:
                 #         dist = int((thing.bottom.x - thing.top.x) / (5 / 2))
-                #         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
+                #         crop_img = crop_img[abs(thing.top.y - dist) :thing.top.y + dist, thing.top.x :thing.bottom.x]
                 # else:
                 #         dist = int((thing.top.x - thing.bottom.x) / (5 / 2))
-                #         crop_img = img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
+                #         crop_img = crop_img[abs(thing.top.y - dist) :thing.top.y + dist, thing.bottom.x :thing.top.x]
 
                 # gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
                 # #cv2.imshow("gray", gray)
@@ -169,14 +208,14 @@ while(1):
                 #                 #cv2.drawContours(crop_img, contoursExternal, c, (0, 0, 255), 3)
                 #         c+=1
                 
-                # cv2.imshow("cropped", crop_img)
+                #cv2.imshow("cropped", crop_img)
 
                 # cv2.imshow("cropped", thresh)
                 # print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
 
         #cv2.imshow("Redcolour",red)
         cv2.imshow("Color Tracking",img)
-        img = cv2.flip(img,1)
+        #img = cv2.flip(img,1)
         #cv2.imshow("red",res)
         if cv2.waitKey(10) & 0xFF == ord('q'):
                 cap.release()
