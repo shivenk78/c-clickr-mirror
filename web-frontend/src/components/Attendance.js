@@ -1,50 +1,36 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
 
-
 class Attendance extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            ping: new Date(),
-            event: '',
-            students: []
+            students: {}
         }
 
-        this.eventSource = new EventSource(realtimeURL)
-        this.addPingWatch = this.addPingWatch.bind(this)
+        this.dataListener = undefined
+
+        this.updateStudents = this.updateStudents.bind(this)
     }
 
-    addPingWatch() {
-        this.eventSource.addEventListener('ping', e => {
-            this.setState(prev => ({
-                ping: new Date(e.data),
-                students: this.props.students
-            }))
-        })
+    updateStudents(students) {
+        this.setState(prev => ({
+            students
+        }))
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => {
-            let now = new Date().getTime()
-            let diff = (now - this.state.ping.getTime()) / 1000
-
-            if (diff > 20) {
-                //window.location.reload();
-            }
-        }, 1000)
-
-        this.addPingWatch()
+        this.dataListener = this.props.firebase.onUsersListener(this.updateStudents)
     }
 
 
     componentWillUnmount() {
-        clearInterval(this.interval)
+        this.props.firebase.users().off('value', this.dataListener)
     }
 
     render() {
-        console.log('attendance render')
+        const { students } = this.state
         return (
             <Table className="table" striped bordered hover>
                 <thead>
@@ -55,11 +41,10 @@ class Attendance extends Component {
                 </thead>
                 <tbody>
 
-                    {this.props.students.map(student =>
-
-                        <tr key={student.netId}>
-                            <td>{student.name}</td>
-                            <td>{student.netId}</td>
+                    {Object.keys(students).map(netId =>
+                        <tr key={netId}>
+                            <td>{students[netId]}</td>
+                            <td>{netId}</td>
                         </tr>
                     )}
 
