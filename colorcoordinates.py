@@ -136,7 +136,7 @@ while(1):
         
         crop_img_list = []
         for thing in patternList:
-                print thing.distance
+                #print thing.distance
                 #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
                 colorAngleRad = math.atan2((thing.bottom.y - thing.top.y), (thing.bottom.x - thing.top.x))
@@ -152,7 +152,7 @@ while(1):
                 cv2.circle(rot_img, (int(thing.top.x), int(thing.top.y)), 7, (0, 255, 0), 4)
                 cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
 
-                cv2.imshow("rotate", rot_img)
+                #cv2.imshow("rotate", rot_img)
                 dist = thing.distance
                 lengthAdd = float(25) /64 * dist
                 widthAdd = float(25) /36 * dist
@@ -166,7 +166,7 @@ while(1):
                 except:
                         continue
         count = 0
-        print len(crop_img_list)
+        #print len(crop_img_list)
         for image in crop_img_list:
                 try:
                         cv2.imshow("cropped #" + str(count), image)
