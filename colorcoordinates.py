@@ -1,14 +1,12 @@
 ''' 
-- Currently gives all distances where the magenta and cyan are at a large enough area so it should not track background noise
-- Will give ALL distances between including distances between the magenta and cyan of two completely different patters. 
-- for some reason I refer to magenta as red and cyan as blue for most of this code
-- VSCode shows cv2 underlined in red but it works so...
+- dont delete my comments bc its code i def do not know how to rewrite
 '''
 #importing modules
 
 import cv2
 import numpy as np
 import math
+import imutils
 
 #create class to store pattern objects
 class pattern:
@@ -21,7 +19,18 @@ class coordinates:
         def __init__(self, x, y):
                 self.x = x
                 self.y = y
+def rotatePoint(origin, point, angle):
+    """
+    Rotate a point counterclockwise by a given angle around a given origin.
 
+    The angle should be given in radians.
+    """
+    ox, oy = origin
+    px, py = point
+
+    qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
+    qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
+    return qx, qy
 #capturing video through webcam
 cap=cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
@@ -36,11 +45,18 @@ idCount = 0
 while(1):
         _, img = cap.read()
 
+        img = cv2.bilateralFilter(img, 11, 75, 75)
+
         #list is cleared for each run through
         patternList = []
+
             
         #converting frame(img i.e BGR) to HSV (hue-saturation-value)
         hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+
+        #find center of image
+        (h, w) = img.shape[:2]
+        centerImage = (w // 2, h // 2)
 
         #definig the range of magenta color
         red_lower=np.array([147,115,150],np.uint8)
@@ -78,13 +94,13 @@ while(1):
                         x,y,w,h = cv2.boundingRect(contour)
 
                         #draws rectangle and label
-                        img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
-                        cv2.putText(img,"top color",(x,y),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255))
+                        #img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
+                        #cv2.putText(img,"top color",(x,y),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255))
 
                         #finds centroid and draws it
                         M = cv2.moments(contour)
                         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                        cv2.putText(img,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 0, 255),1)
+                        #cv2.putText(img,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 0, 255),1)
                         redX = center[0]
                         redY = center[1]
                         cv2.circle(img, center, 2, (0, 0, 0))
@@ -95,18 +111,18 @@ while(1):
                                 blueArea = cv2.contourArea(contour)
                                 if(abs(blueArea) > 400):
                                         x,y,w,h = cv2.boundingRect(contour)     
-                                        img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-                                        cv2.putText(img,"bottom color",(x,y),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0))
+                                        #img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+                                        #cv2.putText(img,"bottom color",(x,y),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0))
                                         M = cv2.moments(contour)
                                         centerBlue = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                                        cv2.putText(img,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.4,(255, 0, 0),1)
+                                        #cv2.putText(img,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.4,(255, 0, 0),1)
                                         blueX = centerBlue[0]
                                         blueY = centerBlue[1]
                                         cv2.circle(img, centerBlue, 2, (0, 0, 0))
                                         
                                         # if either coordinate is (0,0) that means it is not found and should not be appended to the list
                                         if not(redX == 0 and redY == 0) and not(blueX == 0 and blueY == 0):
-                                                distance = math.sqrt( ((redX-blueX)**2)+((redX-blueX)**2) )
+                                                distance = math.sqrt( ((redX-blueX)**2)+((redY-blueY)**2) )
 
                                                 #create object and append to the list
                                                 #first create two coordinate objects and then add that to the pattern object
@@ -116,15 +132,55 @@ while(1):
                                                 patternList.append(p1)
                                                 idCount = idCount + 1
         #show each distance calculated
+        crop_img = img
+        
+        crop_img_list = []
         for thing in patternList:
-                cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
+                #print thing.distance
+                #cv2.line(img, (thing.top.x, thing.top.y), (thing.bottom.x, thing.bottom.y), (0,0,0), 5)
                 #print("(" + str(thing.top.x) + "," + str(thing.top.y) + ")\t" + "(" + str(thing.bottom.x) + "," + str(thing.bottom.y) + ")\t" + "Distance:" + str(thing.distance))
+                colorAngleRad = math.atan2((thing.bottom.y - thing.top.y), (thing.bottom.x - thing.top.x))
+                colorAngle = math.degrees(colorAngleRad)
+                
 
-        #cv2.imshow("Redcolour",red)
+                #rotate
+                rot_img = imutils.rotate(img, int(colorAngle))
+                (thing.top.x, thing.top.y) = rotatePoint(centerImage, (thing.top.x, thing.top.y), (2 * math.pi) - colorAngleRad)
+                (thing.bottom.x, thing.bottom.y) = rotatePoint(centerImage, (thing.bottom.x, thing.bottom.y), (2 * math.pi) - colorAngleRad)
+                
+                # draws circles around the centroids for visualization
+                cv2.circle(rot_img, (int(thing.top.x), int(thing.top.y)), 7, (0, 255, 0), 4)
+                cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
+
+                #cv2.imshow("rotate", rot_img)
+                dist = thing.distance
+                lengthAdd = float(25) /64 * dist
+                widthAdd = float(25) /36 * dist
+
+                # print thing.top.y
+                try: 
+                        crop_img = rot_img[int(thing.top.y - (lengthAdd)): int(thing.top.y + (lengthAdd)), int(thing.top.x - (widthAdd / 2)): int(thing.top.x + (2 * widthAdd))]
+                        cv2.imshow("cropped", crop_img)
+                        addThis = crop_img
+                        crop_img_list.append(addThis)
+                except:
+                        continue
+        count = 0
+        #print len(crop_img_list)
+        for image in crop_img_list:
+                try:
+                        cv2.imshow("cropped #" + str(count), image)
+                        #cv2.imshow("this should look like this" + str(count), crop_img)
+
+                except:
+                        crop_img_list.remove(image)
+                        continue
+                count += 1
         cv2.imshow("Color Tracking",img)
-        img = cv2.flip(img,1)
+        #img = cv2.flip(img,1)
         #cv2.imshow("red",res)
         if cv2.waitKey(10) & 0xFF == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()
                 break
+        #crop_img_list is the list with all the cropped images, crop_img is the image we want to work with
