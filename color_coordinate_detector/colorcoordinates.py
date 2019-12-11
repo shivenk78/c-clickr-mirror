@@ -11,6 +11,13 @@ import pyscreenshot as imageGrab
 from color_coordinate_detector.shapedetector import ShapeDetector
 from color_coordinate_detector.DetectColor import master_runner
 
+from selenium import webdriver
+from PIL import Image
+import io
+import numpy as np
+from selenium.webdriver.firefox.options import Options
+
+
 # create class to store pattern objects
 class pattern:
     def __init__(self, id, magenta, cyan, distance):
@@ -50,7 +57,7 @@ def detectShape(image):
     # blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh1 = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)[1]
     thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
-    #cv2.imshow("thresh", thresh)
+    # cv2.imshow("thresh", thresh)
     cv2.imshow("thresh1", thresh1)
 
     # find contours in the thresholded image and initialize the
@@ -99,27 +106,36 @@ patternList = []
 
 # can give each distance a unique id???
 idCount = 0
+options = Options()
+options.headless = True
+driver = webdriver.Firefox(options=options)
+driver.get("http://10.192.81.85:8080/browserfs.html")
+print("Headless Firefox Initialized")
 
 while (1):
     # print
     # "-----------------------------------------"
     # _, img = cap.read()
 
-    image = imageGrab.grab
+    # image = imageGrab.grab
+
+    data = driver.get_screenshot_as_png()
+    print("screenshot taken")
+    image = Image.open(io.BytesIO(data))
+
+    img1 = np.uint8(image)
+    img = np.array(img1)
 
     red = img[:, :, 2].copy()
     blue = img[:, :, 0].copy()
     img[:, :, 0] = red
     img[:, :, 2] = blue
 
+    cv2.imshow('google', img)
+
+    img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/sample.png', 1)
     img = cv2.bilateralFilter(img, 9, 75, 75)
 
-    img = cv2.bilateralFilter(img, 11, 75, 75)
-
-
-
-
-    img = cv2.imread('/home/maxwelllwang/c-clickr/tester2.PNG', 1)
     img = cv2.bilateralFilter(img, 11, 75, 75)
 
     # list is cleared for each run through
@@ -254,7 +270,7 @@ while (1):
             "sqaure # " + str(squareNum)
             if squareNum > 14:
                 finalImages.append(image)
-                print("squares found")
+
                 # crop_img_list.remove(image)
                 # print ("image removed")
 
@@ -265,45 +281,94 @@ while (1):
 
     len(crop_img_list)
 
-    for imagez in finalImages:
-        print("contour detection started")
-        gray = cv2.cvtColor(imagez, cv2.COLOR_BGR2GRAY)
-        thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
-        cnts = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    # for imagez in finalImages:
+    #     print("contour detection started")
+    #     gray = cv2.cvtColor(imagez, cv2.COLOR_BGR2GRAY)
+    #     thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
+    #     cnts = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    #     cnts = imutils.grab_contours(cnts)
+    #     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+    #
+    #     maxArea = 0
+    #     c = 0
+    #     for i in cnts:
+    #         peri = cv2.arcLength(i, True)
+    #         approx = cv2.approxPolyDP(i, 0.02 * peri, True)
+    #         area = cv2.contourArea(i)
+    #         # if area > 1000 / 2:
+    #         #     cv2.drawContours(img, contours, c, (0, 255, 0), 3)
+    #         squares = 0
+    #         if len(approx) == 4:
+    #             squareContours = approx
+    #
+    #             if area >= maxArea:
+    #                 maxArea = area
+    #                 print("found")
+    #                 biggestContour = squareContours
+    #
+    #                 print(biggestContour)
+    #
+    #                 botLeft = biggestContour[0][0]
+    #                 topLeft = biggestContour[1][0]
+    #                 topRight = biggestContour[2][0]
+    #                 botRight = biggestContour[3][0]
+    #                 image = img
+    #                 cv2.imshow("cropped", img)
+    #                 # master_runner(image, topLeft, topRight, botRight, botLeft)
+    #
+    #                 # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
+    #                 # cv2.imshow("Warped", warped)
+
+    # print(squares)
+    for images in finalImages:
+        resized = imutils.resize(image, width=300)
+        ratio = image.shape[0] / float(resized.shape[0])
+        gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        thresh1 = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)[1]
+        thresh = cv2.threshold(blurred, 160, 220, cv2.THRESH_BINARY)[1]
+        cv2.imshow("thresh", thresh)
+        cv2.imshow("thresh1", thresh1)
+
+        # find contours in the thresholded image and initialize the
+        # shape detector
+        cnts = cv2.findContours(thresh.copy(), cv2.RETR_TREE,
+                                cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
-        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+        sd = ShapeDetector()
 
         maxArea = 0
-        c = 0
-        for i in cnts:
-            peri = cv2.arcLength(i, True)
-            approx = cv2.approxPolyDP(i, 0.02 * peri, True)
-            area = cv2.contourArea(i)
-            # if area > 1000 / 2:
-            #     cv2.drawContours(img, contours, c, (0, 255, 0), 3)
-            squares = 0
-            if len(approx) == 4:
-                squareContours = approx
+        # loop over the contours
+        for c in cnts:
+            # compute the center of the contour, then detect the name of the
+            # shape using only the contour
+            M = cv2.moments(c)
+            cX = int((M["m10"] / M["m00"]) * ratio)
+            cY = int((M["m01"] / M["m00"]) * ratio)
+            shape = sd.detect(c)
 
-                if area >= maxArea:
-                    maxArea = area
-                    print("found")
-                    biggestContour = squareContours
+            # multiply the contour (x, y)-coordinates by the resize ratio,
+            # then draw the contours and the name of the shape on the image
+            c = c.astype("float")
+            c *= ratio
+            c = c.astype("int")
+            area = cv2.contourArea(c)
+            if (area > maxArea and shape == "rectangle"):
+                maxArea = area
+                # this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
+                (x, y, w, h) = cv2.boundingRect(c)
+                array = [[y, x], [y, x + w], [y + h, x + w], [y + h, x]]
 
-                    print(biggestContour)
+                master_runner(images, [y, x], [y, x + w], [y + h, x + w], [y + h, x])
+                print(array)
+                cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 255), 5)
+                cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+                cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.5, (255, 255, 255), 2)
 
-                    botLeft = biggestContour[0][0]
-                    topLeft = biggestContour[1][0]
-                    topRight = biggestContour[2][0]
-                    botRight = biggestContour[3][0]
-                    image = img
-                    cv2.imshow("cropped", img)
-                    # master_runner(image, topLeft, topRight, botRight, botLeft)
-
-                    # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
-                    # cv2.imshow("Warped", warped)
-
-            # print(squares)
+                print("BOUNDS FOUND")
+            # show the output image
+            cv2.imshow("Image", image)
 
     count1 = 0
     for image in finalImages:
