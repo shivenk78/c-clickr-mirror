@@ -30,9 +30,11 @@ class ShapeDetector:
 			if ar >= 0.85 and ar <= 1.15:
 				shape = "square"
 			elif ((x != 0) and (y != 0)):
-
-				#this one is the bounding rectangle
+				#this one is the possible bounding rectangle, back in detect_shapes, it will find the largest of many and determine
+				# the actual bounds for the pattern
 				shape = "rectangle"
+				
+				print "(" + str(x) + ", " + str(y) + ")" + " width: " + str(w) + " height: " + str(h)
 				
 			else:
 				shape = "original rectangle but we dont care about this one"
