@@ -193,7 +193,7 @@ while (1):
 
         # cv2.imshow("rotate", rot_img)
         dist = thing.distance
-        lengthAdd = float(25) / 64 * dist
+        lengthAdd = float(25) / 55 * dist
         widthAdd = float(25) / 36 * dist
 
         # print thing.top.y
@@ -242,7 +242,7 @@ while (1):
                 (x, y, w, h) = cv2.boundingRect(approx)
                 # cv2.putText(img, "top color", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255))
                 ar = w / float(h)
-                print("found")
+
                 # a square will have an aspect ratio that is approximately
                 # equal to one, otherwise, the shape is a rectangle
                 if ar >= 0.80 and ar <= 1.20:
@@ -250,7 +250,7 @@ while (1):
 
                 if area >= maxArea:
                     maxArea = area
-
+                    print("found")
                     biggestContour = squareContours
 
                     print(biggestContour)
@@ -261,7 +261,8 @@ while (1):
                     topRight = biggestContour[2][0]
                     botRight = biggestContour[3][0]
                     image = img
-                    master_runner(image, topLeft, topRight, botRight, botLeft)
+                    cv2.imshow("cropped", img)
+                    # master_runner(image, topLeft, topRight, botRight, botLeft)
 
 
                     # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
@@ -269,7 +270,7 @@ while (1):
 
             # print(squares)
 
-    # cv2.imshow("cropped", imutils.resize(img, height=650))
+
 
     # img = cv2.flip(img,1)
     # cv2.imshow("red",res)
