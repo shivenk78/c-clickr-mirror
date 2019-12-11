@@ -5,7 +5,7 @@ class ShapeDetector:
 	def __init__(self):
 		pass
 
-	def detect(self, c):
+	def detectRect(c):
 		# initialize the shape name and approximate the contour
 		shape = "unidentified"
 		peri = cv2.arcLength(c, True)

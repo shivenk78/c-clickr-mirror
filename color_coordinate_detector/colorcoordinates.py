@@ -47,6 +47,49 @@ def rotatePoint(origin, point, angle):
     return qx, qy
 
 
+def detectRect(c):
+    # initialize the shape name and approximate the contour
+    shape = "unidentified"
+    peri = cv2.arcLength(c, True)
+    # at .04
+    approx = cv2.approxPolyDP(c, 0.01 * peri, True)
+
+    # if the shape is a triangle, it will have 3 vertices
+    if len(approx) == 3:
+        shape = "triangle"
+
+    # if the shape has 4 vertices, it is either a square or
+    # a rectangle
+    elif len(approx) == 4:
+        # compute the bounding box of the contour and use the
+        # bounding box to compute the aspect ratio
+        (x, y, w, h) = cv2.boundingRect(approx)
+        ar = w / float(h)
+
+        # a square will have an aspect ratio that is approximately
+        # equal to one, otherwise, the shape is a rectangle
+
+        if ar >= 0.85 and ar <= 1.15:
+            shape = "square"
+        elif ((x != 0) and (y != 0)):
+            # this one is the possible bounding rectangle, back in detect_shapes, it will find the largest of many and determine
+            # the actual bounds for the pattern
+            shape = "rectangle"
+
+        else:
+            shape = "original rectangle but we dont care about this one"
+
+    # if the shape is a pentagon, it will have 5 vertices
+    elif len(approx) == 5:
+        shape = "pentagon"
+
+    # otherwise, we assume the shape is a circle
+    else:
+        shape = "circle"
+
+    # return the name of the shape
+    return shape
+
 def detectShape(image):
     resized = imutils.resize(image, width=300)
     ratio = image.shape[0] / float(resized.shape[0])
@@ -125,16 +168,16 @@ while (1):
     print(type(image))
     img1 = np.uint8(image)
 
-    img = img1
+    img = img1.copy()
 
     red = img[:, :, 2].copy()
     blue = img[:, :, 0].copy()
     img[:, :, 0] = red
     img[:, :, 2] = blue
-
+    print(type(img))
     cv2.imshow('google', img)
-
-    # img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
+    gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+    img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
 
 
     img = cv2.bilateralFilter(img, 9, 75, 75)
@@ -348,7 +391,7 @@ while (1):
             M = cv2.moments(c)
             cX = int((M["m10"] / M["m00"]) * ratio)
             cY = int((M["m01"] / M["m00"]) * ratio)
-            shape = sd.detect(c)
+            shape = detectRect(c)
 
             # multiply the contour (x, y)-coordinates by the resize ratio,
             # then draw the contours and the name of the shape on the image
@@ -362,7 +405,7 @@ while (1):
                 (x, y, w, h) = cv2.boundingRect(c)
                 array = [[y, x], [y, x + w], [y + h, x + w], [y + h, x]]
 
-                master_runner(images, [y, x], [y, x + w], [y + h, x + w], [y + h, x])
+                # master_runner(images, [y, x], [y, x + w], [y + h, x + w], [y + h, x])
                 print(array)
                 cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 255), 5)
                 cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
