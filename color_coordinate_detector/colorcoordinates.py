@@ -256,13 +256,13 @@ while (1):
                     print(biggestContour)
 
 
-                    botLeft = biggestContour[0]
-                    topLeft = biggestContour[1]
-                    topRight = biggestContour[2]
-                    botRight = biggestContour[3]
+                    botLeft = biggestContour[0][0]
+                    topLeft = biggestContour[1][0]
+                    topRight = biggestContour[2][0]
+                    botRight = biggestContour[3][0]
                     image = img
                     master_runner(image, topLeft, topRight, botRight, botLeft)
-                    cv2.drawContours(img, [biggestContour], -1, (0, 255, 0), 2)
+
 
                     # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
                     # cv2.imshow("Warped", warped)

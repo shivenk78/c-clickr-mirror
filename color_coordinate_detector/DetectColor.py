@@ -1,8 +1,8 @@
 # DetectColor - used to divide a Quadrilateral into sixteenths and find the average color
 #            - (turning given Quadrilateral into array of colors)
 
-from .Quadrilateral import Quadrilateral
-from .ConvertToUIN import *
+from color_coordinate_detector.Quadrilateral import Quadrilateral
+from color_coordinate_detector.ConvertToUIN import *
 import numpy as np
 import cv2
 import math
@@ -133,6 +133,6 @@ img = cv2.imread('tester2.PNG')
 # img = mpimg.imread('tester2.PNG')
 # imgplot = plt.imshow(img)
 # plt.show()
-uin_str = master_runner(img, (514, 138), (36, 138), (40, 950), (504, 944))
-print(uin_str)
-print(uin_to_code("123456789"))
+# uin_str = master_runner(img, (514, 138), (36, 138), (40, 950), (504, 944))
+# print(uin_str)
+# print(uin_to_code("123456789"))
