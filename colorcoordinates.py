@@ -1,7 +1,7 @@
 ''' 
 - dont delete my comments bc its code i def do not know how to rewrite
 '''
-#importing modules
+# importing modules
 
 import cv2
 import numpy as np
@@ -9,18 +9,24 @@ import math
 import imutils
 from shapedetector import ShapeDetector
 
-#create class to store pattern objects
+
+# create class to store pattern objects
 class pattern:
-        def __init__(self, id,  magenta, cyan, distance):
-                self.id = id
-                self.top = magenta
-                self.bottom = cyan
-                self.distance = distance
+    def __init__(self, id, magenta, cyan, distance):
+        self.id = id
+        self.top = magenta
+        self.bottom = cyan
+        self.distance = distance
+
+
 class coordinates:
-        def __init__(self, x, y):
-                self.x = x
-                self.y = y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
 def rotatePoint(origin, point, angle):
+        
     """
     Rotate a point counterclockwise by a given angle around a given origin.
 
@@ -32,6 +38,7 @@ def rotatePoint(origin, point, angle):
     qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
     qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
     return qx, qy
+
 
 def detectShape(image):
         resized = imutils.resize(image, width=300)
@@ -89,10 +96,10 @@ cap=cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
 cap.set(cv2.CAP_PROP_AUTO_WB, 0)
 
-#list of distances found
+# list of distances found
 patternList = []
 
-#can give each distance a unique id???
+# can give each distance a unique id???
 idCount = 0
 
 while(1):
