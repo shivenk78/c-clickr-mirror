@@ -56,8 +56,8 @@ while(1):
 			maxArea = area
 			#this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
 			(x,y,w,h) = cv2.boundingRect(c)
-			cv2.rectangle(image, (x,y), (x+w,y+h), (255, 0, 0), 5)
-			cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+			cv2.rectangle(image, (x,y), (x+w,y+h), (255, 0, 0), 2)
+			#cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
 			cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
 				0.5, (255, 255, 255), 2)
 		# show the output image

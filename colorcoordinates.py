@@ -8,6 +8,7 @@ import numpy as np
 import math
 import imutils
 from shapedetector import ShapeDetector
+from boundingRectangle import RectangleDetector
 
 
 # create class to store pattern objects
@@ -39,7 +40,54 @@ def rotatePoint(origin, point, angle):
     qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
     return qx, qy
 
+def detectRectangle(image):
+        resized = imutils.resize(image, width=300)
+	ratio = image.shape[0] / float(resized.shape[0])
 
+	# convert the resized image to grayscale, blur it slightly,
+	# and threshold it
+	gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+	blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+	thresh1 = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)[1]
+	thresh = cv2.threshold(blurred, 160, 220, cv2.THRESH_BINARY)[1]
+	cv2.imshow("thresh", thresh)
+	cv2.imshow("thresh1", thresh1)
+
+	# find contours in the thresholded image and initialize the
+	# shape detector
+	cnts = cv2.findContours(thresh.copy(), cv2.RETR_TREE,
+		cv2.CHAIN_APPROX_SIMPLE)
+	cnts = imutils.grab_contours(cnts)
+	sd = RectangleDetector()
+
+	maxArea = 0
+	# loop over the contours
+	for c in cnts:
+		# compute the center of the contour, then detect the name of the
+		# shape using only the contour
+		M = cv2.moments(c)
+		cX = int((M["m10"] / M["m00"]) * ratio)
+		cY = int((M["m01"] / M["m00"]) * ratio)
+		shape = sd.detect(c)
+
+		# multiply the contour (x, y)-coordinates by the resize ratio,
+		# then draw the contours and the name of the shape on the image
+		c = c.astype("float")
+		c *= ratio
+		c = c.astype("int")
+		area = cv2.contourArea(c)
+		if (area > maxArea and shape == "rectangle"):
+			maxArea = area
+			#this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
+			(x,y,w,h) = cv2.boundingRect(c)
+                        array = [[y, x] , [y, x + w], [y + h, x + w], [y + h, x]]
+                        print(array)
+			cv2.rectangle(image, (x,y), (x+w,y+h), (255, 0, 0), 2)
+			#cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+			cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+				0.5, (255, 255, 255), 2)
+		# show the output image
+		cv2.imshow("Rectangle bounded", image)
 def detectShape(image):
         resized = imutils.resize(image, width=300)
 	ratio = image.shape[0] / float(resized.shape[0])
@@ -88,7 +136,7 @@ def detectShape(image):
                         #cv2.imshow("Image", image)
                 else:
                         continue
-        print ("number of squares: "  + str(count))
+        # print ("number of squares: "  + str(count))
         return count
 
 #capturing video through webcam
@@ -229,7 +277,7 @@ while(1):
                         continue
         count = 0
         finalImages = []
-        print len(crop_img_list)
+        # print len(crop_img_list)
         for image in crop_img_list:
                 try:
                         
@@ -237,7 +285,7 @@ while(1):
                         # print len(crop_img_list)
                         cv2.imshow("cropped #" + str(count), image)
                         squareNum = detectShape(image,)
-                        print "sqaure # " + str(squareNum)
+                        # print "sqaure # " + str(squareNum)
                         if squareNum > 14:
                                 finalImages.append(image)
                                 # crop_img_list.remove(image)
@@ -247,12 +295,13 @@ while(1):
                 except:
                         crop_img_list.remove(image)
                         continue
-        print len(crop_img_list)
+        # print len(crop_img_list)
 
         count1 = 0
         for image in finalImages:
                 try:
                         cv2.imshow("final cropped #" + str(count), image)
+                        detectRectangle(image)
                         count += 1
 
                 except:
@@ -260,7 +309,7 @@ while(1):
                         continue
                 count += 1
         cv2.imshow("Color Tracking",img)
-        print "-----------------------------------------"
+        # print "-----------------------------------------"
         #img = cv2.flip(img,1)
         #cv2.imshow("red",res)
         if cv2.waitKey(10) & 0xFF == ord('q'):
