@@ -4,47 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/container_UIN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/container_grid"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/label_uin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="UIN:"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/MainActivity_TextView_UIN"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="20sp" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/container_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="180dp"
         android:background="#00A72A2A"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_UIN">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/container_UIN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/label_uin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UIN:"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/grid_row_cyan"
@@ -222,4 +216,5 @@
             android:background="@drawable/magenta_box"
             android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
