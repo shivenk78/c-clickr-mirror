@@ -2,7 +2,7 @@
 # python detect_shapes.py --image orange.png
 
 # import the necessary packages
-from shapedetector import ShapeDetector
+from color_coordinate_detector.shapedetector import ShapeDetector
 import argparse
 import imutils
 import cv2
