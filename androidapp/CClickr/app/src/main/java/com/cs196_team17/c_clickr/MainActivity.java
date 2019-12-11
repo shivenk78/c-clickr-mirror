@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static int[] COLOR_IDS = new int[] {R.drawable.red_box, R.drawable.green_box, R.drawable.blue_box, R.drawable.yellow_box};
+    public static int[] COLOR_IDS = new int[] {R.drawable.red_box, R.drawable.green_box, R.drawable.orange_box, R.drawable.yellow_box};
     private String uid, uin;
 
     private TextView textViewUIN;
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     setGrid(uinBase4);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
+                    Log.d("firebase", "bbbbOII");
                 }
             }
 
