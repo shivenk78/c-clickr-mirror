@@ -254,6 +254,8 @@ while (1):
                     biggestContour = squareContours
 
                     print(biggestContour)
+
+                    biggestContour
                     cv2.drawContours(img, [biggestContour], -1, (0, 255, 0), 2)
 
                     # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
