@@ -8,13 +8,18 @@ import numpy as np
 import math
 import imutils
 import time
+import imgkit
+
+
+
+
 
 # for linux
 import pyscreenshot as imageGrab
 
+
 # for windows and mac
 # from PIL import ImageGrab
-
 
 
 # create class to store pattern objects
@@ -58,6 +63,8 @@ patternList = []
 idCount = 0
 
 while (1):
+
+
 
     image = imageGrab.grab()
 
@@ -163,6 +170,7 @@ while (1):
                         idCount = idCount + 1
     # show each distance calculated
     crop_img = img
+    print(type(crop_img))
 
     crop_img_list = []
     for thing in patternList:
@@ -183,7 +191,7 @@ while (1):
         cv2.circle(rot_img, (int(thing.top.x), int(thing.top.y)), 7, (0, 255, 0), 4)
         cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
 
-        #cv2.imshow("rotate", rot_img)
+        # cv2.imshow("rotate", rot_img)
         dist = thing.distance
         lengthAdd = float(25) / 64 * dist
         widthAdd = float(25) / 36 * dist
@@ -192,7 +200,7 @@ while (1):
         try:
             crop_img = rot_img[int(thing.top.y - (lengthAdd)): int(thing.top.y + (lengthAdd)),
                        int(thing.top.x - (widthAdd / 2)): int(thing.top.x + (2 * widthAdd))]
-            #cv2.imshow("cropped", crop_img)
+            # cv2.imshow("cropped", crop_img)
             addThis = crop_img
             crop_img_list.append(addThis)
         except:
@@ -248,13 +256,12 @@ while (1):
                     print(biggestContour)
                     cv2.drawContours(img, [biggestContour], -1, (0, 255, 0), 2)
 
-                    #warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
+                    # warped = four_point_transform(orig, biggestContour.reshape(4, 2) * ratio)
                     # cv2.imshow("Warped", warped)
-
 
             # print(squares)
 
-    #cv2.imshow("cropped", imutils.resize(img, height=650))
+    # cv2.imshow("cropped", imutils.resize(img, height=650))
 
     # img = cv2.flip(img,1)
     # cv2.imshow("red",res)
