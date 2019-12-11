@@ -2,22 +2,25 @@
 
 # define color ranges
 lower_yellow = (25,50,50)
-upper_yellow = (50,255,255)
+upper_yellow = (47,255,255)
 
 lower_red = (0,50,50)
-upper_red = (24,255,255)
+upper_red = (14,255,255)
+
+lower_orange = (15, 50, 50)
+upper_orange = (24, 255, 255)
 
 lower_red_2 = (150,50,50)
 upper_red_2 = (179,255,255)
 
-lower_green = (51,50,50)
+lower_green = (48,50,50)
 upper_green = (80,255,255)
 
 lower_blue = (81,50,50)
 upper_blue = (149,255,255)
 
 # assigns each color to digit in code
-colorDict = {"red": 0, "green": 1, "blue": 2, "yellow": 3}
+colorDict = {"red": 0, "green": 1, "orange": 2, "yellow": 3}
 
 #converts array of colors to array of digits in code
 #takes an array of tuples (3 elements)
@@ -28,8 +31,8 @@ def colorsToNumbers(array_of_colors):
             number_array.append(colorDict["red"])
         elif inRange(color, lower_green, upper_green):
             number_array.append(colorDict["green"])
-        elif inRange(color, lower_blue, upper_blue):
-            number_array.append(colorDict["blue"])
+        elif inRange(color, lower_orange, upper_orange):
+            number_array.append(colorDict["orange"])
         elif inRange(color, lower_yellow, upper_yellow):
             number_array.append(colorDict["yellow"])
     return number_array

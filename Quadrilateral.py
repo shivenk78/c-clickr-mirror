@@ -63,8 +63,21 @@ class Quadrilateral:
         sum_sat = 0
         sum_val = 0
         count = 0
-        for x in range(int(self.topLeft[0]), int(self.topRight[0] + 1)):
-            for y in range(int(self.topLeft[1]), int(self.botLeft[1] + 1)):
+        if self.topLeft[0] < self.topRight[0]:
+            first = self.topLeft[0]
+            second = self.topRight[0]
+        else:
+            first = self.topRight[0]
+            second = self.topLeft[0]
+
+        if self.topLeft[1] < self.botLeft[1]:
+            third = self.topLeft[1]
+            fourth = self.botLeft[1]
+        else:
+            third = self.botLeft[1]
+            fourth = self.topLeft[1]
+        for x in range(int(first), int(second + 1)):
+            for y in range(int(third), int(fourth + 1)):
                 color = image[y,x]
                 sum_hue += color[0]
                 sum_sat += color[1]
