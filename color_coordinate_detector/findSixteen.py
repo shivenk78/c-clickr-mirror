@@ -4,13 +4,60 @@ import math
 import imutils
 import time
 import imgkit
+from selenium import webdriver
+from PIL import Image
+import io
+import numpy as np
+from selenium.webdriver.firefox.options import Options
 
-img = imgkit.from_url('http://google.com', False)
-print(type(img))
-image = np.array(img)
-print(type(image))
-gray = (np.float32(image), cv2.COLOR_RGB2GRAY)
-cv2.imshow('ree', gray)
+#
+# browser = webdriver.Firefox()
+# browser.get('http://10.192.81.85:8080/jsfs.html')
+#
+#
+# print('1')
+# data = browser.get_screenshot_as_png()
+# while(1):
+#     image = imgkit.from_url('http://10.192.81.85:8080/browserfs.htmlq', False)
+#
+#     data = Image.open(io.BytesIO(image))
+#
+#     img = np.asarray(data)
+#
+#
+#     cv2.imshow('google', img)
+#
+#     if cv2.waitKey(10) & 0xFF == ord('q'):
+#         # cap.release()
+#         cv2.destroyAllWindows()
+#         break
+while (1):
+
+    options = Options()
+    options.headless = True
+    driver = webdriver.Firefox(options=options)
+    driver.get("http://10.192.81.85:8080/browserfs.html")
+    print("Headless Firefox Initialized")
+
+    data = driver.get_screenshot_as_png()
+
+    image = Image.open(io.BytesIO(data))
+
+
+
+    img = np.array(image)
+    red = img[:, :, 2].copy()
+    blue = img[:, :, 0].copy()
+    img[:, :, 0] = red
+    img[:, :, 2] = blue
+
+    cv2.imshow('google', img)
+
+    if cv2.waitKey(10) & 0xFF == ord('q'):
+        # cap.release()
+        cv2.destroyAllWindows()
+        break
+
 # while(1):
 #     image = ImageGrab.grab()
 #
