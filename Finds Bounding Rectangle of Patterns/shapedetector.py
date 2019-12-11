@@ -34,8 +34,6 @@ class ShapeDetector:
 				# the actual bounds for the pattern
 				shape = "rectangle"
 				
-				print "(" + str(x) + ", " + str(y) + ")" + " width: " + str(w) + " height: " + str(h)
-				
 			else:
 				shape = "original rectangle but we dont care about this one"
 
