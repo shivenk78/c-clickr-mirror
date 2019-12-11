@@ -26,10 +26,16 @@ class ShapeDetector:
 
 			# a square will have an aspect ratio that is approximately
 			# equal to one, otherwise, the shape is a rectangle
+
 			if ar >= 0.85 and ar <= 1.15:
 				shape = "square"
-			else:
+			elif ((x != 0) and (y != 0)):
+
+				#this one is the bounding rectangle
 				shape = "rectangle"
+				
+			else:
+				shape = "original rectangle but we dont care about this one"
 
 		# if the shape is a pentagon, it will have 5 vertices
 		elif len(approx) == 5:
