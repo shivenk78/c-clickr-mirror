@@ -40,5 +40,5 @@ class ShapeDetector:
 			shape = "circle"
 
 		# return the name of the shape
-		print countSquare
-		return shape
+		#print countSquare
+		return [shape, countSquare]

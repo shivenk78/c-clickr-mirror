@@ -43,8 +43,8 @@ def detectShape(image):
 	#blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 	thresh1 = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)[1]
 	thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
-	cv2.imshow("thresh", thresh)
-	cv2.imshow("thresh1", thresh1)
+	#cv2.imshow("thresh", thresh)
+	#cv2.imshow("thresh1", thresh1)
 
 	# find contours in the thresholded image and initialize the
 	# shape detector
@@ -53,6 +53,7 @@ def detectShape(image):
 	cnts = imutils.grab_contours(cnts)
 	sd = ShapeDetector()
 
+        count = 0
 	# loop over the contours
 	for c in cnts:
 		# compute the center of the contour, then detect the name of the
@@ -60,19 +61,25 @@ def detectShape(image):
 		M = cv2.moments(c)
 		cX = int((M["m10"] / M["m00"]) * ratio)
 		cY = int((M["m01"] / M["m00"]) * ratio)
-		shape = sd.detect(c)
+                area = cv2.contourArea(c)
 
-		# multiply the contour (x, y)-coordinates by the resize ratio,
-		# then draw the contours and the name of the shape on the image
-		c = c.astype("float")
-		c *= ratio
-		c = c.astype("int")
-		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-		cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-			0.5, (255, 255, 255), 2)
-                print "is this running???"
-		# show the output image
-		cv2.imshow("Image", image)
+                if (area > 200):
+                        (shape, countSquare) = sd.detect(c)
+                        count = count + countSquare
+                        # multiply the contour (x, y)-coordinates by the resize ratio,
+                        # then draw the contours and the name of the shape on the image
+                        c = c.astype("float")
+                        c *= ratio
+                        c = c.astype("int")
+                        cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+                        cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+                                0.5, (255, 255, 255), 2)
+                        # show the output image
+                        cv2.imshow("Image", image)
+                else:
+                        continue
+        print ("number of squares: "  + str(count))
+        return count
 
 #capturing video through webcam
 cap=cv2.VideoCapture(0)
@@ -86,6 +93,7 @@ patternList = []
 idCount = 0
 
 while(1):
+        print "-----------------------------------------"
         _, img = cap.read()
 
         img = cv2.bilateralFilter(img, 11, 75, 75)
@@ -203,27 +211,48 @@ while(1):
                 # print thing.top.y
                 try: 
                         crop_img = rot_img[int(thing.top.y - (lengthAdd)): int(thing.top.y + (lengthAdd)), int(thing.top.x - (widthAdd / 2)): int(thing.top.x + (2 * widthAdd))]
-                        cv2.imshow("cropped", crop_img)
+                        #cv2.imshow("cropped", crop_img)
                         addThis = crop_img
                         crop_img_list.append(addThis)
                 except:
                         continue
         count = 0
-        #print len(crop_img_list)
+        finalImages = []
+        print len(crop_img_list)
         for image in crop_img_list:
                 try:
-                        detectShape(image)
                         #cv2.imshow("cropped #" + str(count), image)
+                        count += 1
+                        # print len(crop_img_list)
+                        squareNum = detectShape(image)
+                        print "sqaure # " + str(squareNum)
+                        if squareNum > 14:
+                                finalImages.append(image)
+                                # crop_img_list.remove(image)
+                                # print ("image removed")
+
+
+                except:
+                        crop_img_list.remove(image)
+                        continue
+        print len(crop_img_list)
+
+        count1 = 0
+        for image in finalImages:
+                try:
+                        cv2.imshow("final cropped #" + str(count), image)
+                        count += 1
 
                 except:
                         crop_img_list.remove(image)
                         continue
                 count += 1
         cv2.imshow("Color Tracking",img)
+        print "-----------------------------------------"
         #img = cv2.flip(img,1)
         #cv2.imshow("red",res)
         if cv2.waitKey(10) & 0xFF == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()
                 break
-        #crop_img_list is the list with all the cropped images, crop_img is the image we want to work with
+        #finalImages list is the list list of "perfect images"
