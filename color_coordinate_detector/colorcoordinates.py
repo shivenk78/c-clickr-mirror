@@ -122,9 +122,10 @@ while (1):
     data = driver.get_screenshot_as_png()
     print("screenshot taken")
     image = Image.open(io.BytesIO(data))
-
+    print(type(image))
     img1 = np.uint8(image)
-    img = np.array(img1)
+
+    img = img1
 
     red = img[:, :, 2].copy()
     blue = img[:, :, 0].copy()
@@ -133,7 +134,9 @@ while (1):
 
     cv2.imshow('google', img)
 
-    img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/sample.png', 1)
+    # img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
+
+
     img = cv2.bilateralFilter(img, 9, 75, 75)
 
     img = cv2.bilateralFilter(img, 11, 75, 75)
