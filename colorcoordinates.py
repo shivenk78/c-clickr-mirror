@@ -41,10 +41,10 @@ def detectShape(image):
 	# and threshold it
 	gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
 	#blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-	thresh1 = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)[1]
-	thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
-	#cv2.imshow("thresh", thresh)
-	#cv2.imshow("thresh1", thresh1)
+	thresh1 = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY)[1]
+	thresh = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)[1]
+	cv2.imshow("thresh", thresh)
+	cv2.imshow("thresh1", thresh1)
 
 	# find contours in the thresholded image and initialize the
 	# shape detector
@@ -63,7 +63,7 @@ def detectShape(image):
 		cY = int((M["m01"] / M["m00"]) * ratio)
                 area = cv2.contourArea(c)
 
-                if (area > 200):
+                if (area > 300):
                         (shape, countSquare) = sd.detect(c)
                         count = count + countSquare
                         # multiply the contour (x, y)-coordinates by the resize ratio,
@@ -71,11 +71,14 @@ def detectShape(image):
                         c = c.astype("float")
                         c *= ratio
                         c = c.astype("int")
-                        cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-                        cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-                                0.5, (255, 255, 255), 2)
+                        
+                        #drawing on image below, good for visualization in testing but should be removed when moving onto the next step
+
+                        # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+                        # cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+                        #         0.5, (255, 255, 255), 2)
                         # show the output image
-                        cv2.imshow("Image", image)
+                        #cv2.imshow("Image", image)
                 else:
                         continue
         print ("number of squares: "  + str(count))
@@ -204,8 +207,9 @@ while(1):
                 cv2.circle(rot_img, (int(thing.bottom.x), int(thing.bottom.y)), 7, (255, 255, 255), 4)
 
                 #cv2.imshow("rotate", rot_img)
+                #original was 64
                 dist = thing.distance
-                lengthAdd = float(25) /62 * dist
+                lengthAdd = float(25) /55 * dist
                 widthAdd = float(25) /36 * dist
 
                 # print thing.top.y
@@ -221,10 +225,11 @@ while(1):
         print len(crop_img_list)
         for image in crop_img_list:
                 try:
-                        #cv2.imshow("cropped #" + str(count), image)
+                        
                         count += 1
                         # print len(crop_img_list)
-                        squareNum = detectShape(image)
+                        cv2.imshow("cropped #" + str(count), image)
+                        squareNum = detectShape(image,)
                         print "sqaure # " + str(squareNum)
                         if squareNum > 14:
                                 finalImages.append(image)
