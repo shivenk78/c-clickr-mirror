@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import math
 import imutils
+from shapedetector import ShapeDetector
 
 #create class to store pattern objects
 class pattern:
@@ -31,6 +32,48 @@ def rotatePoint(origin, point, angle):
     qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
     qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
     return qx, qy
+
+def detectShape(image):
+        resized = imutils.resize(image, width=300)
+	ratio = image.shape[0] / float(resized.shape[0])
+
+	# convert the resized image to grayscale, blur it slightly,
+	# and threshold it
+	gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+	#blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+	thresh1 = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)[1]
+	thresh = cv2.threshold(gray, 90, 255, cv2.THRESH_BINARY)[1]
+	cv2.imshow("thresh", thresh)
+	cv2.imshow("thresh1", thresh1)
+
+	# find contours in the thresholded image and initialize the
+	# shape detector
+	cnts = cv2.findContours(thresh.copy(), cv2.RETR_TREE,
+		cv2.CHAIN_APPROX_SIMPLE)
+	cnts = imutils.grab_contours(cnts)
+	sd = ShapeDetector()
+
+	# loop over the contours
+	for c in cnts:
+		# compute the center of the contour, then detect the name of the
+		# shape using only the contour
+		M = cv2.moments(c)
+		cX = int((M["m10"] / M["m00"]) * ratio)
+		cY = int((M["m01"] / M["m00"]) * ratio)
+		shape = sd.detect(c)
+
+		# multiply the contour (x, y)-coordinates by the resize ratio,
+		# then draw the contours and the name of the shape on the image
+		c = c.astype("float")
+		c *= ratio
+		c = c.astype("int")
+		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+		cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+			0.5, (255, 255, 255), 2)
+                print "is this running???"
+		# show the output image
+		cv2.imshow("Image", image)
+
 #capturing video through webcam
 cap=cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
@@ -154,7 +197,7 @@ while(1):
 
                 #cv2.imshow("rotate", rot_img)
                 dist = thing.distance
-                lengthAdd = float(25) /64 * dist
+                lengthAdd = float(25) /62 * dist
                 widthAdd = float(25) /36 * dist
 
                 # print thing.top.y
@@ -169,8 +212,8 @@ while(1):
         #print len(crop_img_list)
         for image in crop_img_list:
                 try:
-                        cv2.imshow("cropped #" + str(count), image)
-                        #cv2.imshow("this should look like this" + str(count), crop_img)
+                        detectShape(image)
+                        #cv2.imshow("cropped #" + str(count), image)
 
                 except:
                         crop_img_list.remove(image)
