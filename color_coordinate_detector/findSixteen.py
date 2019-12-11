@@ -5,7 +5,6 @@ import imutils
 import time
 import imgkit
 
-
 img = imgkit.from_url('http://google.com', False)
 print(type(img))
 image = np.array(img)
@@ -55,7 +54,3 @@ cv2.imshow('ree', gray)
 #     cv2.imshow('ree', img)
 #
 #     print(squares)
-
-
-
-
