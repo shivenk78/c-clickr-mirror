@@ -7,7 +7,7 @@ const renderAttendance = (students) => {
         <Table className="table" striped bordered hover>
             <thead>
                 <tr>
-                    <th>NetId</th>
+                    <th>UIN</th>
                     <th>Present?</th>
                 </tr>
             </thead>
