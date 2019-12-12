@@ -39,24 +39,24 @@ class Quadrilateral:
     #rectangle is NOT maximized, just want the area towards the center of the quadrilateral
     def findRectFit(self):
         if self.topLeft[0] > self.botLeft[0]:
-            x1 = self.topLeft[0] + ((self.topRight[0] - self.topLeft[0]) / 4)
+            x1 = self.topLeft[0] + ((self.topRight[0] - self.topLeft[0]) / 3)
         else:
-            x1 = self.botLeft[0] + ((self.botRight[0] - self.botLeft[0]) / 4)
+            x1 = self.botLeft[0] + ((self.botRight[0] - self.botLeft[0]) / 3)
 
         if self.topRight[0] > self.botRight[0]:
-            x2 = self.botRight[0] - ((self.botRight[0] - self.botLeft[0]) / 4)
+            x2 = self.botRight[0] - ((self.botRight[0] - self.botLeft[0]) / 3)
         else:
-            x2 = self.topRight[0] - ((self.topRight[0] - self.topLeft[0]) / 4)
+            x2 = self.topRight[0] - ((self.topRight[0] - self.topLeft[0]) / 3)
 
         if self.topLeft[1] > self.topRight[1]:
-            y1 = self.topLeft[1] + ((self.botLeft[1] - self.topLeft[1]) / 4)
+            y1 = self.topLeft[1] + ((self.botLeft[1] - self.topLeft[1]) / 3)
         else:
-            y1 = self.topRight[1] + ((self.botRight[1] - self.topRight[1]) / 4)
+            y1 = self.topRight[1] + ((self.botRight[1] - self.topRight[1]) / 3)
 
         if self.botLeft[1] > self.botRight[1]:
-            y2 = self.botRight[1] - ((self.botRight[1] - self.topRight[1]) / 4)
+            y2 = self.botRight[1] - ((self.botRight[1] - self.topRight[1]) / 3)
         else:
-            y2 = self.botLeft[1] - ((self.botLeft[1] - self.topLeft[1]) / 4)
+            y2 = self.botLeft[1] - ((self.botLeft[1] - self.topLeft[1]) / 3)
 
         return Quadrilateral((x1,y1), (x2,y1), (x1,y2), (x2,y2))
 
