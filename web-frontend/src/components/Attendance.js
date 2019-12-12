@@ -1,56 +1,60 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
+import _ from 'lodash'
+
+const renderAttendance = (students) => {
+    return (
+        <Table className="table" striped bordered hover>
+            <thead>
+                <tr>
+                    <th>NetId</th>
+                    <th>Present?</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {Object.keys(students).map(id => {
+                    const present = students[id] ? 'Yes' : 'No'
+                    return id ?
+                        <tr key={id}>
+                            <td>{id}</td>
+                            <td>{present}</td>
+                        </tr> : null
+                })}
+
+            </tbody>
+        </Table>
+    )
+}
 
 class Attendance extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             students: {}
         }
+        this.attendanceListener = undefined;
 
-        this.dataListener = undefined
-
-        this.updateStudents = this.updateStudents.bind(this)
+        this.updateTable = this.updateTable.bind(this)
     }
 
-    updateStudents(students) {
-        this.setState(prev => ({
-            students
-        }))
+    componentDidUpdate() {
+        this.attendanceListener = this.props.firebase.onAttendanceListener(this.props.date, this.updateTable)
     }
 
-    componentDidMount() {
-        this.dataListener = this.props.firebase.onUsersListener(this.updateStudents)
-    }
+    updateTable(students) {
+        if (!_.isEqual(this.state.students, students)) {
+            console.log(this.state.students)
+            console.log(students)
+            this.setState(() => ({
+                students
+            }))
+        }
 
-
-    componentWillUnmount() {
-        this.props.firebase.users().off('value', this.dataListener)
     }
 
     render() {
-        const { students } = this.state
-        return (
-            <Table className="table" striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>NetId</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {Object.keys(students).map(netId =>
-                        <tr key={netId}>
-                            <td>{students[netId]}</td>
-                            <td>{netId}</td>
-                        </tr>
-                    )}
-
-                </tbody>
-            </Table>
-        )
+        return renderAttendance(this.state.students)
     }
 }
 

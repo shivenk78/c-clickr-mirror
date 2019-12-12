@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../styles/App.css';
 
-import Attendance from './Attendance'
 import { FirebaseContext } from '../Firebase';
 
-const App = () => (
-  <FirebaseContext.Consumer>
-    {firebase => {
-      return <div className="App" >
-        <h1>Attendance</h1>
-        <Attendance firebase={firebase} />
-      </div>
-    }}
+import Attendance from './Attendance'
+import Dates from './Dates';
 
-  </FirebaseContext.Consumer>
-)
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentDate: undefined
+    }
+    this.setCurrentDate = this.setCurrentDate.bind(this)
+  }
+
+  setCurrentDate(date) {
+    this.setState({ currentDate: date })
+  }
+
+  render() {
+    return (
+      <FirebaseContext.Consumer>
+        {firebase => {
+          return <div className="App" >
+            <h1>Attendance</h1>
+            <Dates firebase={firebase} setCurrentDate={this.setCurrentDate} />
+            <Attendance firebase={firebase} date={this.state.currentDate} />
+          </div>
+        }}
+
+      </FirebaseContext.Consumer>
+    )
+  }
+}
 
 
 export default App;

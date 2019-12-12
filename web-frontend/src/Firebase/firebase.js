@@ -1,5 +1,5 @@
 import app from 'firebase/app'
-import 'firebase/database'
+import 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: "AIzaSyDvYZ7icT00ubEYAhptum6-I7f4mlpCfWQ",
@@ -18,24 +18,34 @@ class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig)
 
-        this.db = app.database()
+        this.firestore = app.firestore()
     }
 
-    user = netId => this.db.ref(usersURL + netId)
-    users = () => this.db.ref(usersURL)
+    users = (date) => this.firestore.collection('Dates').doc(date)
 
-    onUsersListener = (callback) => {
-        return this.users().on('value', (snapshot) => {
-            callback(snapshot.val())
+    dates = () => this.firestore.collection('Dates')
+
+    onDatesListener = (callback) => {
+        return this.dates().onSnapshot(querySnap => {
+            const entries = []
+            querySnap.forEach(doc => {
+                entries.push({ id: doc.id, data: doc.data() })
+            })
+            callback(entries)
         })
     }
 
-    getUsers = (callback) => {
-        return this.users().once('value').then((snapshot) => {
-            callback(snapshot.val())
-        });
-
+    onAttendanceListener = (date, callback) => {
+        if (date) {
+            return this.users(date).onSnapshot(doc => {
+                callback(doc.data())
+            })
+        }
+        else {
+            return undefined
+        }
     }
+
 }
 
 export default Firebase
