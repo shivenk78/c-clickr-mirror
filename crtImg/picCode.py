@@ -10,12 +10,14 @@ codes = []
 images = []
 
 def toFour(code):
+    code4Str = ""
     codeFour = 0
     while (code != 0):
-        codeFour *= 10
-        codeFour += code % 4
+        code4Str += str(code % 4)
+        # codeFour *= 10
+        # codeFour += code % 4
         code = int(code / 4)
-    code4Str = str(codeFour)
+    # code4Str = str(codeFour)
     for i in range(len(code4Str), 16):
         code4Str += "0"
     code4Str = code4Str[::-1]
@@ -37,21 +39,22 @@ def genImg(y):
     codes.append(y.copy())
     for x in range(16):
         im.paste((colors[int(y[x])]), (points[x][0], points[x][1], points[x][2], points[x][3]))
-    # black lines
-    im.paste("black", (0, 0, 284, 2))
-    im.paste("black", (0, 77, 284, 79))
-    im.paste("black", (0, 479, 284, 481))
-    im.paste("black", (0, 556, 284, 558))
-    im.paste("black", (0, 0, 2, 558))
-    im.paste("black", (282, 0, 284, 558))
-    im.paste("black", (71, 79, 73, 479))
-    im.paste("black", (141, 79, 143, 479))
-    im.paste("black", (211, 79, 213, 479))
-    im.paste("black", (2, 178, 282, 180))
-    im.paste("black", (2, 278, 282, 280))
-    im.paste("black", (2, 378, 282, 380))
+
 
     im.paste("turquoise", (2, 481, 282, 556))
+    # black lines
+    im.paste("black", (0, 0, 284, 4))
+    im.paste("black", (0, 76, 284, 80))
+    im.paste("black", (0, 478, 284, 482))
+    im.paste("black", (0, 555, 284, 559))
+    im.paste("black", (0, 0, 4, 558))
+    im.paste("black", (281, 0, 285, 558))
+    im.paste("black", (70, 79, 74, 479))
+    im.paste("black", (140, 79, 144, 479))
+    im.paste("black", (210, 79, 214, 479))
+    im.paste("black", (2, 177, 282, 181))
+    im.paste("black", (2, 277, 282, 281))
+    im.paste("black", (2, 377, 282, 381))
     # im.show()
     images.append(im)
     return im
