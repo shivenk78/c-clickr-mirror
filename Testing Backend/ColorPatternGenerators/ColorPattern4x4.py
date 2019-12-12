@@ -83,7 +83,7 @@ def generate_random_pattern():
 
 # generates random patterns in fixed time intervals
 def generate_continuous_random_pattern():
-    time_diff = 500
+    time_diff = 5000
 
     generate_random_pattern()
     master.after(time_diff, generate_continuous_random_pattern)
@@ -123,7 +123,6 @@ choose_mode = {
     "r": generate_random_pattern,
     "cr": generate_continuous_random_pattern
 }
-
 
 try:
     func = choose_mode.get(mode)

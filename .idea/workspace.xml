@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae35b94a-9da2-4509-99f6-431469552fa2" name="Default Changelist" comment="" />
+    <list default="true" id="ae35b94a-9da2-4509-99f6-431469552fa2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/colorcoordinates.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/colorcoordinates.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/geckodriver.log" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,7 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../klicker/backup 852121119" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -43,7 +47,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.colorcoordinates (1)">
+  <component name="RunManager" selected="Python.colorcoordinates (2)">
     <configuration name="ColorPattern4x4" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="c-clickr" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,6 +82,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/color_coordinate_detector/colorcoordinates.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="colorcoordinates (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="c-clickr" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Backend/colorcoordinates.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -129,13 +154,15 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.findSixteen" />
       <item itemvalue="Python.ColorPattern4x4" />
-      <item itemvalue="Python.colorcoordinates" />
       <item itemvalue="Python.colorcoordinates (1)" />
+      <item itemvalue="Python.colorcoordinates" />
+      <item itemvalue="Python.findSixteen" />
+      <item itemvalue="Python.colorcoordinates (2)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.colorcoordinates (2)" />
         <item itemvalue="Python.colorcoordinates (1)" />
         <item itemvalue="Python.colorcoordinates" />
         <item itemvalue="Python.ColorPattern4x4" />
@@ -178,26 +205,34 @@
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
     <state x="442" y="270" key="#com.intellij.execution.impl.EditConfigurationsDialog/49.27.1871.1173@49.27.1871.1173" timestamp="1575447431571" />
-    <state x="767" y="370" width="424" height="484" key="FileChooserDialogImpl" timestamp="1576042606009">
+    <state x="767" y="370" width="424" height="484" key="FileChooserDialogImpl" timestamp="1576120279536">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
-    <state x="767" y="370" width="424" height="484" key="FileChooserDialogImpl/49.27.1871.1173@49.27.1871.1173" timestamp="1576042606009" />
-    <state width="1848" height="218" key="GridCell.Tab.0.bottom" timestamp="1576047731240">
+    <state x="767" y="370" width="424" height="484" key="FileChooserDialogImpl/49.27.1871.1173@49.27.1871.1173" timestamp="1576120279536" />
+    <state width="1848" height="379" key="GridCell.Tab.0.bottom" timestamp="1576127835624">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
-    <state width="1848" height="218" key="GridCell.Tab.0.bottom/49.27.1871.1173@49.27.1871.1173" timestamp="1576047731240" />
-    <state width="1848" height="218" key="GridCell.Tab.0.center" timestamp="1576047731239">
+    <state width="1642" height="218" key="GridCell.Tab.0.bottom/49.27.1665.937@49.27.1665.937" timestamp="1576122965721" />
+    <state width="1848" height="218" key="GridCell.Tab.0.bottom/49.27.1871.1053@49.27.1871.1053" timestamp="1576125459080" />
+    <state width="1848" height="379" key="GridCell.Tab.0.bottom/49.27.1871.1173@49.27.1871.1173" timestamp="1576127835624" />
+    <state width="1848" height="379" key="GridCell.Tab.0.center" timestamp="1576127835623">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
-    <state width="1848" height="218" key="GridCell.Tab.0.center/49.27.1871.1173@49.27.1871.1173" timestamp="1576047731239" />
-    <state width="1848" height="218" key="GridCell.Tab.0.left" timestamp="1576047731238">
+    <state width="1642" height="218" key="GridCell.Tab.0.center/49.27.1665.937@49.27.1665.937" timestamp="1576122965719" />
+    <state width="1848" height="218" key="GridCell.Tab.0.center/49.27.1871.1053@49.27.1871.1053" timestamp="1576125459077" />
+    <state width="1848" height="379" key="GridCell.Tab.0.center/49.27.1871.1173@49.27.1871.1173" timestamp="1576127835623" />
+    <state width="1848" height="379" key="GridCell.Tab.0.left" timestamp="1576127835622">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
-    <state width="1848" height="218" key="GridCell.Tab.0.left/49.27.1871.1173@49.27.1871.1173" timestamp="1576047731238" />
-    <state width="1848" height="218" key="GridCell.Tab.0.right" timestamp="1576047731239">
+    <state width="1642" height="218" key="GridCell.Tab.0.left/49.27.1665.937@49.27.1665.937" timestamp="1576122965719" />
+    <state width="1848" height="218" key="GridCell.Tab.0.left/49.27.1871.1053@49.27.1871.1053" timestamp="1576125459077" />
+    <state width="1848" height="379" key="GridCell.Tab.0.left/49.27.1871.1173@49.27.1871.1173" timestamp="1576127835622" />
+    <state width="1848" height="379" key="GridCell.Tab.0.right" timestamp="1576127835624">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
-    <state width="1848" height="218" key="GridCell.Tab.0.right/49.27.1871.1173@49.27.1871.1173" timestamp="1576047731239" />
+    <state width="1642" height="218" key="GridCell.Tab.0.right/49.27.1665.937@49.27.1665.937" timestamp="1576122965720" />
+    <state width="1848" height="218" key="GridCell.Tab.0.right/49.27.1871.1053@49.27.1871.1053" timestamp="1576125459078" />
+    <state width="1848" height="379" key="GridCell.Tab.0.right/49.27.1871.1173@49.27.1871.1173" timestamp="1576127835624" />
     <state width="1848" height="392" key="GridCell.Tab.1.bottom" timestamp="1575875183867">
       <screen x="49" y="27" width="1871" height="1173" />
     </state>
