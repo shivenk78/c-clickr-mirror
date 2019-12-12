@@ -4,11 +4,11 @@
 # importing modules
 
 import cv2
-import numpy as np
 import math
 import imutils
 from color_coordinate_detector.shapedetector import ShapeDetector
 from color_coordinate_detector.boundingRectangle import RectangleDetector
+from color_coordinate_detector.DetectColor import master_runner
 
 from selenium import webdriver
 from PIL import Image
@@ -86,8 +86,31 @@ def detectRectangle(image):
             maxArea = area
             # this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
             (x, y, w, h) = cv2.boundingRect(c)
-            array = [[y, x], [y, x + w], [y + h, x + w], [y + h, x]]
+
+            topLeft = [y , x]
+            topRight = [y, x + w]
+            botRight = [y + h, x + w]
+            botLeft = [y + h, x]
+
+
+            #rotated everything forward one because
+            array = [topLeft, topRight, botRight, botLeft]
             print(array)
+
+            #dont use both at the same time
+            rotatedArray = [botLeft, topLeft, topRight, botRight]
+            rotatedImage = imutils.rotate_bound(image, 90)
+
+
+            # master runner takes topLeft, topRight, botRight, botLeft
+
+            #
+            UIN = master_runner(image, botLeft, topLeft, topRight, botRight)
+
+
+            print('================')
+            print('UIN', UIN)
+            print('================')
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
             # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
             cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
@@ -191,6 +214,7 @@ def detectRect(self, c):
     # return the name of the shape
     return shape
 
+
 # capturing video through webcam
 # cap = cv2.VideoCapture(0)
 # cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
@@ -202,14 +226,14 @@ patternList = []
 # can give each distance a unique id???
 idCount = 0
 
-#webdriver stuff
+# webdriver stuff
 options = Options()
 options.headless = True
 driver = webdriver.Firefox(options=options)
-#maxwells phone
-driver.get("http://10.192.81.85:8080/browserfs.html")
-#angelas phone
-#driver.get("http://10.194.228.83:8080/browserfs.html")
+# maxwells phone
+# driver.get("http://10.192.81.85:8080/browserfs.html")
+# angelas phone
+driver.get("http://10.194.228.83:8080/browserfs.html")
 print("Headless Firefox Initialized")
 
 while (1):
@@ -218,18 +242,10 @@ while (1):
     # _, img = cap.read()
 
     data = driver.get_screenshot_as_png()
-    print("screenshot taken")
+
     image = Image.open(io.BytesIO(data))
 
-    print(type(image))
-
     img = np.uint8(image)
-
-
-
-    print(type(img))
-
-
 
     # img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
@@ -361,10 +377,10 @@ while (1):
 
             count += 1
             # print len(crop_img_list)
-            #cv2.imshow("cropped #" + str(count), image)
+            # cv2.imshow("cropped #" + str(count), image)
             squareNum = detectShape(image, )
             # print "sqaure # " + str(squareNum)
-            if squareNum > 14:
+            if squareNum > 11:
                 finalImages.append(image)
                 # crop_img_list.remove(image)
                 # print ("image removed")

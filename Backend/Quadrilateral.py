@@ -1,24 +1,27 @@
-# Quadrialteral Class - stores the corners (x, y) of a quadrilateral
+#Quadrialteral Class - stores the corners (x, y) of a quadrilateral
 #                    - methods to split the quadrialteral into equal portions (grid)
 
 import cv2
-from imutils.video import VideoStream
-
+# from imutils.video import VideoStream
 
 class Quadrilateral:
-    # initializes variables
+    #initializes variables
     def __init__(self, TL, TR, BL, BR):
         self.topLeft = TL
         self.topRight = TR
         self.botLeft = BL
         self.botRight = BR
 
-    # finds the halfway point of a line drawn between two points
+    #finds the halfway point of a line drawn between two points
     def findHalves(self, point1, point2):
         return (point1[0] + ((point2[0] - point1[0]) / 2), point1[1] + ((point2[1] - point1[1]) / 2))
 
-    # returns a quarter of the quadrilateral, coordinate plane style (return first quadrant etc.)
-    # num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
+    #same thing as findHalves but for other fractions
+    def findFrac(self, point1, point2, fraction):
+        return (point1[0] + ((point2[0] - point1[0]) * fraction), point1[1] + ((point2[1] - point1[1]) * fraction))
+
+    #returns a quarter of the quadrilateral, coordinate plane style (return first quadrant etc.)
+    #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
     def findQuarterQuad(self, num):
         leftMiddle = self.findHalves(self.topLeft, self.botLeft)
         rightMiddle = self.findHalves(self.topRight, self.botRight)
@@ -32,8 +35,8 @@ class Quadrilateral:
         elif num == 4:
             return Quadrilateral(center, rightMiddle, self.findHalves(self.botLeft, self.botRight), self.botRight)
 
-    # returns a rectange completely within the bounds of the quadrilateral
-    # rectangle is NOT maximized, just want the area towards the center of the quadrilateral
+    #returns a rectange completely within the bounds of the quadrilateral
+    #rectangle is NOT maximized, just want the area towards the center of the quadrilateral
     def findRectFit(self):
         if self.topLeft[0] > self.botLeft[0]:
             x1 = self.topLeft[0] + ((self.topRight[0] - self.topLeft[0]) / 4)
@@ -55,10 +58,10 @@ class Quadrilateral:
         else:
             y2 = self.botLeft[1] - ((self.botLeft[1] - self.topLeft[1]) / 4)
 
-        return Quadrilateral((x1, y1), (x2, y1), (x1, y2), (x2, y2))
+        return Quadrilateral((x1,y1), (x2,y1), (x1,y2), (x2,y2))
 
-    # finds the average color of a rectangle (will not work on other quadrilaterals)
-    # image must be in hsv
+    #finds the average color of a rectangle (will not work on other quadrilaterals)
+    #image must be in hsv
     def getAverageColor(self, image):
         sum_hue = 0
         sum_sat = 0
@@ -79,7 +82,7 @@ class Quadrilateral:
             fourth = self.topLeft[1]
         for x in range(int(first), int(second + 1)):
             for y in range(int(third), int(fourth + 1)):
-                color = image[y, x]
+                color = image[y,x]
                 sum_hue += color[0]
                 sum_sat += color[1]
                 sum_val += color[2]
