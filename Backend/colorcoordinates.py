@@ -117,8 +117,8 @@ def detectRectangle(image):
             print('================')
 
             #SEND UIN TO FIREBASE DO NOT UNCOMMENT BECAUSE CODE DOESNT WORK PERFECTLY
-            # sign_in(UIN)
-            # print('UIN sent to firebase')
+            sign_in(UIN)
+            print('UIN sent to firebase')
 
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 5)
             # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
