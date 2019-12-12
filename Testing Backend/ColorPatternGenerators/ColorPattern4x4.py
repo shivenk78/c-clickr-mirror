@@ -30,7 +30,7 @@ def generate_pattern(new_code_str):
     code = []
     for i in range(len(new_code_str)):
         code.append(int(new_code_str[i]))
-
+        
     # fills each quadrant with its respective color
     count = 0
     for j in range(0, yTotal, yDim):
