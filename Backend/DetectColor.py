@@ -24,7 +24,7 @@ def sixteenthArray(root):
     for quarter in quarterArray:
         for i in range(1, 5):
             sixteenth = quarter.findQuarterQuad(i)
-            colorRects.append(sixteenth.findRectFit())
+            colorRects.append(sixteenth.findRectFit2())
     return colorRects
 
 #gets the average color in a given rectangle
@@ -44,6 +44,8 @@ def rearrange(array):
         temp1 = array[switch + 2]
         temp2 = array[switch + 3]
         array[switch + 2] = array[switch + 4]
+        array[switch + 3] = array[switch + 5]
+        array[switch + 4] = temp1
         array[switch + 5] = temp2
     return array
 
@@ -127,10 +129,10 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
         uin_array.append(uin_str)
     return uin_str
 
-img = cv2.imread('realtest.png')
-img = mpimg.imread('realtest.png')
-imgplot = plt.imshow(img)
-plt.show()
-uin_str = master_runner(img, (441, 44), (48, 43), (47, 696), (418, 704))
-print(uin_str)
-print(uin_to_code("123456789"))
+# img = cv2.imread('realtest.png')
+# #img = mpimg.imread('realtest.png')
+# #imgplot = plt.imshow(img)
+# #plt.show()
+# uin_str = master_runner(img, (453, 30), (31, 29), (29, 733), (453, 733))
+# print(uin_str)
+# print(uin_to_code("123456789"))

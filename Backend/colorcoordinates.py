@@ -47,6 +47,8 @@ def rotatePoint(origin, point, angle):
 
 
 def detectRectangle(image):
+
+
     resized = imutils.resize(image, width=300)
     ratio = image.shape[0] / float(resized.shape[0])
 
@@ -106,8 +108,8 @@ def detectRectangle(image):
 
             #
 
-            rotatedImage = imutils.rotate(image, 270)
-            UIN = master_runner(rotatedImage, botLeft, topLeft, topRight, botRight)
+            # rotatedImage = imutils.rotate(image, 270)
+            UIN = master_runner(image, botLeft, topLeft, topRight, botRight)
 
 
             print('================')
@@ -123,7 +125,8 @@ def detectRectangle(image):
             cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (255, 255, 255), 2)
             # show the output image
-            cv2.imshow("Rectangle bounded", image)
+    cv2.imshow("Rectangle bounded", image)
+
 
 
 def detectShape(image):
@@ -387,7 +390,7 @@ while (1):
             # cv2.imshow("cropped #" + str(count), image)
             squareNum = detectShape(image, )
             # print "sqaure # " + str(squareNum)
-            if squareNum > 11:
+            if squareNum > 14:
                 finalImages.append(image)
                 # crop_img_list.remove(image)
                 # print ("image removed")
