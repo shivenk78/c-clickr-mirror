@@ -88,6 +88,7 @@ def uin_to_code(new_uin_str):
 
 
 def master_runner(image, topLeft, topRight, botRight, botLeft):
+
     uncropped = Quadrilateral((topLeft[1], topLeft[0]), (topRight[1], topRight[0]),
         (botLeft[1], botLeft[0]), (botRight[1], botRight[0]))
     topLeftAdd = uncropped.findFrac(uncropped.topLeft, uncropped.botLeft, 7/32)
@@ -98,6 +99,7 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     #bilateral filter
     blur = cv2.bilateralFilter(image,9,75,75)
     #color balancing
+
     newBlur = simplest_cb(blur, 1)
     #convert to hsv
     img = np.array(cv2.cvtColor(newBlur, cv2.COLOR_BGR2HSV))
@@ -123,4 +125,8 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     uin_str = code_to_uin(color_digits_str[::-1])
     if uin_str not in uin_array:
         uin_array.append(uin_str)
+    print("===========================")
+    print("UIN: ", uin_str)
+    print("===========================")
+
     return uin_str

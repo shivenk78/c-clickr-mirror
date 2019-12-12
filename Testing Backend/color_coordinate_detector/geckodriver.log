@@ -1187,6 +1187,7 @@ Exiting due to channel error.
 1576105552476	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
 1576105554120	Marionette	INFO	Listening on port 32787
 1576105554221	Marionette	WARN	TLS certificate errors will be ignored for this session
+
 1576109177876	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile5PSwdg"
 *** You are running in headless mode.
 1576109178537	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
@@ -1271,3 +1272,4 @@ A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
 [ERROR audio_thread_priority::rt_linux] setrlimit64: 1
 1576112323734	Marionette	INFO	Listening on port 33977
 1576112323780	Marionette	WARN	TLS certificate errors will be ignored for this session
+
