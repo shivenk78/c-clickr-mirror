@@ -17,7 +17,6 @@ import io
 import numpy as np
 from selenium.webdriver.firefox.options import Options
 
-
 # create class to store pattern objects
 class pattern:
     def __init__(self, id, magenta, cyan, distance):
@@ -106,7 +105,9 @@ def detectRectangle(image):
             # master runner takes topLeft, topRight, botRight, botLeft
 
             #
-            UIN = master_runner(image, botLeft, topLeft, topRight, botRight)
+
+            rotatedImage = imutils.rotate(image, 270)
+            UIN = master_runner(rotatedImage, botLeft, topLeft, topRight, botRight)
 
 
             print('================')

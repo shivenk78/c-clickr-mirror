@@ -5,9 +5,9 @@ from Backend.Quadrilateral import Quadrilateral
 from Backend.ConvertToUIN import *
 import numpy as np
 import cv2
+import math
+import sys
 
-# import matplotlib.pyplot as plt
-# import matplotlib.image as mpimg
 
 #array storing UINs
 uin_array = []
@@ -37,13 +37,13 @@ def array_average_color(array, image):
 #since the array given by sixteenthArray will be out of order,
 #this will put it in the correct to be decoded
 def rearrange(array):
+    print(len(array))
     for half in range(2):
         switch = half * 8
+        print(switch)
         temp1 = array[switch + 2]
         temp2 = array[switch + 3]
         array[switch + 2] = array[switch + 4]
-        array[switch + 3] = array[switch + 5]
-        array[switch + 4] = temp1
         array[switch + 5] = temp2
     return array
 
@@ -113,6 +113,8 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     fullPattern = Quadrilateral(topLeft1, topRight1, botLeft1, botRight1)
     colorRects = sixteenthArray(fullPattern)
     sorted = rearrange(colorRects)
+    for rect in sorted:
+        print(rect.topLeft, rect.botRight)
     print(array_average_color(sorted, img))
     color_digits = colorsToNumbers(array_average_color(sorted, img))
     print(color_digits)
@@ -124,3 +126,11 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     if uin_str not in uin_array:
         uin_array.append(uin_str)
     return uin_str
+
+img = cv2.imread('realtest.png')
+img = mpimg.imread('realtest.png')
+imgplot = plt.imshow(img)
+plt.show()
+uin_str = master_runner(img, (441, 44), (48, 43), (47, 696), (418, 704))
+print(uin_str)
+print(uin_to_code("123456789"))

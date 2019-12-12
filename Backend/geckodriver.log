@@ -1483,3 +1483,49 @@ A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
 [Parent 5133, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /build/firefox-AWfb_V/firefox-71.0+build5/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 728
 A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
 1576121271788	Marionette	INFO	Stopped listening on port 37545
+1576121579322	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile4F6Z9V"
+*** You are running in headless mode.
+1576121579955	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1576121579955	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1576121579956	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1576121579956	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1576121582738	Marionette	INFO	Listening on port 38561
+1576121582800	Marionette	WARN	TLS certificate errors will be ignored for this session
+1576121849667	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebrVnZA"
+*** You are running in headless mode.
+1576121850664	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1576121850665	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1576121850665	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1576121850665	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1576121856406	Marionette	INFO	Listening on port 37305
+1576121856446	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 4882, Gecko_IOThread] WARNING: pipe error (100): Connection reset by peer: file /build/firefox-AWfb_V/firefox-71.0+build5/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 4882, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /build/firefox-AWfb_V/firefox-71.0+build5/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 728
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+[Parent 2484, Gecko_IOThread] WARNING: pipe error (91): Connection reset by peer: file /build/firefox-AWfb_V/firefox-71.0+build5/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 2484, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /build/firefox-AWfb_V/firefox-71.0+build5/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 728
+1576121894580	Marionette	INFO	Stopped listening on port 35437
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+1576121898331	Marionette	INFO	Stopped listening on port 46371
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1576122010570	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebPQmnO"
+*** You are running in headless mode.
+1576122011422	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1576122011423	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1576122011423	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1576122011423	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1576122014040	Marionette	INFO	Listening on port 37077
+1576122014091	Marionette	WARN	TLS certificate errors will be ignored for this session
+1576122968014	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilel8mDkO"
+*** You are running in headless mode.
+1576122968524	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1576122968525	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1576122968525	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1576122968525	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1576122970973	Marionette	INFO	Listening on port 40433
+1576122971042	Marionette	WARN	TLS certificate errors will be ignored for this session
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
