@@ -25,7 +25,7 @@ def sixteenthArray(root):
     for quarter in quarterArray:
         for i in range(1, 5):
             sixteenth = quarter.findQuarterQuad(i)
-            colorRects.append(sixteenth.findRectFit())
+            colorRects.append(sixteenth.findRectFit2())
     return colorRects
 
 #gets the average color in a given rectangle
@@ -134,6 +134,6 @@ img = cv2.imread('realtest.png')
 #img = mpimg.imread('realtest.png')
 #imgplot = plt.imshow(img)
 #plt.show()
-uin_str = master_runner(img, (35, 38), (33, 462), (734, 463), (734, 38))
+uin_str = master_runner(img, (453, 30), (31, 29), (29, 733), (453, 733))
 print(uin_str)
 print(uin_to_code("123456789"))

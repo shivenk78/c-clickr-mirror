@@ -60,6 +60,14 @@ class Quadrilateral:
 
         return Quadrilateral((x1,y1), (x2,y1), (x1,y2), (x2,y2))
 
+    def findRectFit2(self):
+        x1 = self.topRight[0] + ((self.botRight[0] - self.topRight[0]) / 3)
+        x2 = self.botRight[0] - ((self.botRight[0] - self.topRight[0]) / 3)
+        y1 = self.topRight[1] + ((self.topLeft[1] - self.topRight[1]) / 3)
+        y2 = self.topLeft[1] - ((self.topLeft[1] - self.topRight[1]) / 3)
+
+        return Quadrilateral((x1,y1), (x2,y1), (x1,y2), (x2,y2))
+
 
 
     #finds the average color of a rectangle (will not work on other quadrilaterals)
