@@ -89,6 +89,13 @@ def uin_to_code(new_uin_str):
 
 
 def master_runner(image, topLeft, topRight, botRight, botLeft):
+    uncropped = Quadrilateral((topLeft[1], topLeft[0]), (topRight[1], topRight[0]),
+        (botLeft[1], botLeft[0]), (botRight[1], botRight[0]))
+    topLeftAdd = uncropped.findFrac(uncropped.topLeft, uncropped.botLeft, 7/32)
+    topRightAdd = uncropped.findFrac(uncropped.topRight, uncropped.botRight, 7/32)
+    botLeftAdd = uncropped.findFrac(uncropped.botLeft, uncropped.topLeft, 7/32)
+    botRightAdd = uncropped.findFrac(uncropped.botRight, uncropped.topRight, 7/32)
+
     #bilateral filter
     blur = cv2.bilateralFilter(image,9,75,75)
     #color balancing
@@ -96,10 +103,10 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     #convert to hsv
     img = np.array(cv2.cvtColor(newBlur, cv2.COLOR_BGR2HSV))
     #finds where the pattern starts
-    topLeft1 = (topLeft[1] + (7/32) * distance(topLeft[1], botLeft[1]), topLeft[0])
-    topRight1 = (topRight[1] + (7/32) * distance(topLeft[1], botLeft[1]), topRight[0])
-    botLeft1 = (botLeft[1] - (7/32) * distance(topLeft[1], botLeft[1]), botLeft[0])
-    botRight1 = (botRight[1] - (7/32) * distance(topRight[1], botRight[1]), botRight[0])
+    topLeft1 = (topLeftAdd[0], topLeftAdd[1])
+    topRight1 = (topRightAdd[0], topRightAdd[1])
+    botLeft1 = (botLeftAdd[0], botLeftAdd[1])
+    botRight1 = (botRightAdd[0], botRightAdd[1])
     print(topLeft1, topRight1, botLeft1, botRight1)
 
     #create quadrilateral

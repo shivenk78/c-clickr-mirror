@@ -16,6 +16,10 @@ class Quadrilateral:
     def findHalves(self, point1, point2):
         return (point1[0] + ((point2[0] - point1[0]) / 2), point1[1] + ((point2[1] - point1[1]) / 2))
 
+    #same thing as findHalves but for other fractions
+    def findFrac(self, point1, point2, fraction):
+        return (point1[0] + ((point2[0] - point1[0]) * fraction), point1[1] + ((point2[1] - point1[1]) * fraction))
+
     #returns a quarter of the quadrilateral, coordinate plane style (return first quadrant etc.)
     #num is 1-4 with 1 being top right and 4 being bottom right (like coord plane numbering)
     def findQuarterQuad(self, num):
