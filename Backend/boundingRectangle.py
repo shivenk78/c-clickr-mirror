@@ -1,6 +1,5 @@
 # import the necessary packages
 import cv2
-from color_coordinate_detector.DetectColor import master_runner
 
 
 class RectangleDetector:
@@ -8,8 +7,6 @@ class RectangleDetector:
         pass
 
     def detect(self, c):
-        print("second class called")
-
         # initialize the shape name and approximate the contour
         shape = "unidentified"
         peri = cv2.arcLength(c, True)
@@ -27,13 +24,7 @@ class RectangleDetector:
             # bounding box to compute the aspect ratio
             (x, y, w, h) = cv2.boundingRect(approx)
             ar = w / float(h)
-            print("bounds found")
-            topLeft = [y + h, x]
-            topRight = [y, x]
-            botRight = [y, x + w]
-            botLeft = [y + h, x + w]
 
-            array = [topLeft, topRight, botRight, botLeft]
             # a square will have an aspect ratio that is approximately
             # equal to one, otherwise, the shape is a rectangle
 
@@ -56,7 +47,4 @@ class RectangleDetector:
             shape = "circle"
 
         # return the name of the shape
-        # return shape
-
-        # returns array of coordinates
-        return array
+        return shape

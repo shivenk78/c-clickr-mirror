@@ -55,10 +55,10 @@ def detectRectangle(image):
     # and threshold it
     gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    thresh1 = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)[1]
-    thresh = cv2.threshold(blurred, 160, 220, cv2.THRESH_BINARY)[1]
+    #thresh1 = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)[1]
+    thresh = cv2.threshold(blurred, 80, 220, cv2.THRESH_BINARY)[1]
     cv2.imshow("thresh", thresh)
-    cv2.imshow("thresh1", thresh1)
+    #cv2.imshow("thresh1", thresh1)
 
     # find contours in the thresholded image and initialize the
     # shape detector
@@ -96,7 +96,7 @@ def detectRectangle(image):
 
             #rotated everything forward one because
             array = [topLeft, topRight, botRight, botLeft]
-            print(array)
+
 
             #dont use both at the same time
             rotatedArray = [botLeft, topLeft, topRight, botRight]
@@ -117,12 +117,12 @@ def detectRectangle(image):
             # sign_in(UIN)
             # print('UIN sent to firebase')
 
-            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 5)
             # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
             cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (255, 255, 255), 2)
-        # show the output image
-        cv2.imshow("Rectangle bounded", image)
+            # show the output image
+            cv2.imshow("Rectangle bounded", image)
 
 
 def detectShape(image):
@@ -134,9 +134,9 @@ def detectShape(image):
     gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
     # blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh1 = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY)[1]
-    thresh = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)[1]
-    cv2.imshow("thresh", thresh)
-    cv2.imshow("thresh1", thresh1)
+    thresh = cv2.threshold(gray, 65, 255, cv2.THRESH_BINARY)[1]
+    #cv2.imshow("thresh", thresh)
+    #cv2.imshow("thresh1", thresh1)
 
     # find contours in the thresholded image and initialize the
     # shape detector
@@ -256,7 +256,7 @@ while (1):
     # img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img = cv2.bilateralFilter(img, 11, 75, 75)
-    cv2.imshow('bilateral', img)
+    # cv2.imshow('bilateral', img)
     # list is cleared for each run through
     patternList = []
 
@@ -400,7 +400,7 @@ while (1):
     count1 = 0
     for image in finalImages:
         try:
-            cv2.imshow("final cropped #" + str(count), image)
+            #cv2.imshow("final cropped #" + str(count), image)
             detectRectangle(image)
             count += 1
 
