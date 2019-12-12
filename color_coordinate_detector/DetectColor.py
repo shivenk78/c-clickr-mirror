@@ -98,6 +98,8 @@ def uin_to_code(new_uin_str):
 
 
 def master_runner(image, topLeft, topRight, botRight, botLeft):
+
+    print("master runner received")
     # bilateral filter
     blur = cv2.bilateralFilter(image, 9, 75, 75)
     # color balancing
@@ -126,6 +128,10 @@ def master_runner(image, topLeft, topRight, botRight, botLeft):
     uin_str = code_to_uin(color_digits_str[::-1])
     if uin_str not in uin_array:
         uin_array.append(uin_str)
+    print("===========================")
+    print("UIN: ", uin_str)
+    print("===========================")
+
     return uin_str
 
 

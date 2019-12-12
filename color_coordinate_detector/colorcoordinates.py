@@ -9,6 +9,7 @@ import math
 import imutils
 from color_coordinate_detector.shapedetector import ShapeDetector
 from color_coordinate_detector.boundingRectangle import RectangleDetector
+from color_coordinate_detector.DetectColor import master_runner
 
 from selenium import webdriver
 from PIL import Image
@@ -55,6 +56,7 @@ def detectRectangle(image):
     gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh1 = cv2.threshold(blurred, 90, 255, cv2.THRESH_BINARY)[1]
+
     thresh = cv2.threshold(blurred, 160, 220, cv2.THRESH_BINARY)[1]
     cv2.imshow("thresh", thresh)
     cv2.imshow("thresh1", thresh1)
@@ -86,11 +88,20 @@ def detectRectangle(image):
             maxArea = area
             # this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
             (x, y, w, h) = cv2.boundingRect(c)
-            array = [[y, x], [y, x + w], [y + h, x + w], [y + h, x]]
-            print(array)
+            # array = [[y, x], [y, x + w], [y + h, x + w], [y + h, x]]
+            # print(array)
+
+            print("master runner called")
+            array = shape
+            topLeft = shape[0]
+            topRight = shape[1]
+            botRight = shape[2]
+            botLeft = shape[3]
+            master_runner(image, topLeft, topRight, botRight, botLeft)
+
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
             # cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-            cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+            cv2.putText(image, 'rect', (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (255, 255, 255), 2)
         # show the output image
         cv2.imshow("Rectangle bounded", image)
@@ -218,23 +229,22 @@ while (1):
     # _, img = cap.read()
 
     data = driver.get_screenshot_as_png()
-    print("screenshot taken")
+
     image = Image.open(io.BytesIO(data))
 
-    print(type(image))
+
 
     img = np.uint8(image)
 
 
 
-    print(type(img))
 
 
 
     # img = cv2.imread('/home/maxwelllwang/c-clickr/Finds Bounding Rectangle of Patterns/orange.png', 1)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img = cv2.bilateralFilter(img, 11, 75, 75)
-    cv2.imshow('bilateral', img)
+
     # list is cleared for each run through
     patternList = []
 
@@ -364,7 +374,7 @@ while (1):
             #cv2.imshow("cropped #" + str(count), image)
             squareNum = detectShape(image, )
             # print "sqaure # " + str(squareNum)
-            if squareNum > 14:
+            if squareNum > 10:
                 finalImages.append(image)
                 # crop_img_list.remove(image)
                 # print ("image removed")
