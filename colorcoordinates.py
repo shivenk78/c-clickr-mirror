@@ -9,6 +9,7 @@ import math
 import imutils
 from shapedetector import ShapeDetector
 from boundingRectangle import RectangleDetector
+# from DetectColor import master_runner
 
 
 # create class to store pattern objects
@@ -60,7 +61,8 @@ def detectRectangle(image):
 	cnts = imutils.grab_contours(cnts)
 	sd = RectangleDetector()
 
-	maxArea = 0
+	maxArea = 0  
+        boundingArray = []           
 	# loop over the contours
 	for c in cnts:
 		# compute the center of the contour, then detect the name of the
@@ -80,14 +82,17 @@ def detectRectangle(image):
 			maxArea = area
 			#this gives you the coordinates for the bounds, you have the top left point and using width and height, find the other ones
 			(x,y,w,h) = cv2.boundingRect(c)
-                        array = [[y, x] , [y, x + w], [y + h, x + w], [y + h, x]]
-                        print(array)
+                        #array = [[y, x] , [y, x + w], [y + h, x + w], [y + h, x]]
+                        array = [[y + h, x], [y, x], [y, x + w], [y + h, x + w]]
+                        boundingArray = array
+                        #print(array)
 			cv2.rectangle(image, (x,y), (x+w,y+h), (255, 0, 0), 2)
 			#cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
 			cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
 				0.5, (255, 255, 255), 2)
 		# show the output image
 		cv2.imshow("Rectangle bounded", image)
+        return boundingArray
 def detectShape(image):
         resized = imutils.resize(image, width=300)
 	ratio = image.shape[0] / float(resized.shape[0])
@@ -301,7 +306,9 @@ while(1):
         for image in finalImages:
                 try:
                         cv2.imshow("final cropped #" + str(count), image)
-                        detectRectangle(image)
+                        array = detectRectangle(image)
+                        print array
+                        #UIN = master_runner(image, array[0], array[1], array[2], array[3])
                         count += 1
 
                 except:
