@@ -2,6 +2,8 @@
 
 This is a mirrored repository of a group project. I worked mainly on the pattern design and Android app.
 
+[Click here for the YouTube demo video] (https://www.youtube.com/watch?v=jtZS6DpiGlQ&t=3s)
+
 ### Overview
 Designed to be an i-clicker replacement for uiuc students. Students download an app to visually display their uin with an array of colored boxes. A camera in the
 front of the room is then able to pick up all the different arrays on each student's phone. Behind the scenes, we convert the colored arrays back to uins using
